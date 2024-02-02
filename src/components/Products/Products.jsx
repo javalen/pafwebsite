@@ -63,8 +63,8 @@ const Products = () => {
           </h1>
           <p data-aos="fade-up" className="text-xs text-gray-400">
             Information about PMP Properties in the palm of your hand. Get the
-            app to see easy it is to view, edit and audit the informatoin that's
-            important to you.
+            app to see how easy it is to view, edit and audit the informatoin
+            that's important to you.
           </p>
         </div>
         {/* Body section */}

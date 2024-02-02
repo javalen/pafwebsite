@@ -7,6 +7,7 @@ export default {
       colors: {
         primary: "#80c157",
         secondary: "#0093d0",
+        error: "#FF0000",
       },
       container: {
         center: true,
@@ -17,5 +18,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };

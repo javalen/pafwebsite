@@ -1,7 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
+import Logo from "../../assets/logo.png";
+import pb from "../../api/pocketbase";
+import useAuth from "../../auth/useAuth";
 import { IoCloseOutline } from "react-icons/io5";
 
-const Popup = ({ orderPopup, setOrderPopup }) => {
+const LoginPopup = ({ orderPopup, setOrderPopup }) => {
+  pb.autoCancellation(false);
+  const [loading, setLoading] = useState(false);
+  const auth = useAuth();
+  const [loginFailed, setLoginFailed] = useState(false);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    console.log("email", email, "password", password);
+    try {
+      const authData = await pb
+        .collection("users")
+        .authWithPassword(email, password);
+      const user = authData.record;
+      console.log("Login Success");
+      //useAuth.logIn(user);
+      auth.logIn(user);
+    } catch (error) {
+      setLoading(false);
+      setLoginFailed(true);
+      console.log(" 24 Error logging in [" + error);
+    }
+    setLoading(false);
+  };
+
   return (
     <>
       {orderPopup && (
@@ -12,6 +42,9 @@ const Popup = ({ orderPopup, setOrderPopup }) => {
               <div className="flex items-center justify-between">
                 <div>
                   <h1>Login</h1>
+                </div>
+                <div>
+                  <img src={Logo} alt="Logo" className="w-20" />
                 </div>
                 <div>
                   <IoCloseOutline
@@ -25,15 +58,20 @@ const Popup = ({ orderPopup, setOrderPopup }) => {
                 <input
                   type="email"
                   placeholder="Email"
+                  id="email"
                   className=" w-full rounded-full border border-gray-300 dark:border-gray-500 dark:bg-gray-800 px-2 py-1 mb-4"
                 />
                 <input
                   type="text"
                   placeholder="Password"
+                  id="password"
                   className=" w-full rounded-full border border-gray-300 dark:border-gray-500 dark:bg-gray-800 px-2 py-1 mb-4"
                 />
                 <div className="flex justify-center">
-                  <button className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-1 px-4 rounded-full ">
+                  <button
+                    onClick={handleSubmit}
+                    className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-1 px-4 rounded-full "
+                  >
                     Login
                   </button>
                 </div>
@@ -46,4 +84,4 @@ const Popup = ({ orderPopup, setOrderPopup }) => {
   );
 };
 
-export default Popup;
+export default LoginPopup;

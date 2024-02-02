@@ -27,7 +27,7 @@ const ProductsData = [
       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
 ];
-const TopProducts = ({ handleOrderPopup }) => {
+const TopProducts = ({ handleLogoutPopup }) => {
   return (
     <div>
       <div className="container">
@@ -74,7 +74,7 @@ const TopProducts = ({ handleOrderPopup }) => {
                 </p>
                 <button
                   className="bg-primary hover:scale-105 duration-300 text-white py-1 px-4 rounded-full mt-4 group-hover:bg-white group-hover:text-primary"
-                  onClick={handleOrderPopup}
+                  onClick={handleLogoutPopup}
                 >
                   Order Now
                 </button>
