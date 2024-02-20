@@ -8,14 +8,16 @@ const useFacility = () => {
   const FACILITIES = "facilities";
   const timeOut = import.meta.env.VITE;
 
+  //Returns all of the facilities stored in local storage
   const getLocalFacilities = async () => {
     let facs = await JSON.parse(localStorage.getItem(FACILITIES));
 
     if (facs === null || facs?.length === 0) {
-      const newFacs = await getFacs();
+      const newFacs = await getAllFacilities();
     }
     return JSON.parse(localStorage.getItem(FACILITIES));
   };
+
   const reloadData = async () => {
     const facs = await getLocalFacilities();
     const lastUpdated = new Date(localStorage.getItem(LAST_UPATE));
@@ -25,11 +27,11 @@ const useFacility = () => {
     let seconds = Math.round(elapsed);
     seconds /= 1000;
     if (facs.length === 0 || seconds > timeOut) {
-      getFacs();
+      getAllFacilities();
     }
   };
 
-  const getAllFacilities = () => {
+  const getAllFacilities1 = () => {
     reloadData();
   };
 
@@ -37,7 +39,7 @@ const useFacility = () => {
     reloadData();
   });
 
-  const getFacs = async () => {
+  const getAllFacilities = async () => {
     try {
       const records = await pb.collection("facility").getFullList({});
       const jsonFac = JSON.stringify(records);
@@ -51,11 +53,10 @@ const useFacility = () => {
 
   const getFacility = async (id) => {
     const facilities = await getLocalFacilities();
+    console.log("Facilities", facilities);
     const facility = facilities.find((element) => element.id === id);
     return facility;
   };
-
-  const getFacilitySystems = (id) => {};
 
   const getFacilityUsers = async (id, type) => {
     const all = `fac_id ="${id}"`;
@@ -66,7 +67,6 @@ const useFacility = () => {
         filter: query,
         expand: "user",
       });
-      console.log(resultList);
       return resultList.items;
     } catch (error) {
       console.log(error, query);
@@ -77,9 +77,11 @@ const useFacility = () => {
 
   const getFacilityByDivisions = async (division) => {
     const facilities = await getLocalFacilities();
+    console.log("FACILITIES", facilities);
     const facs = facilities.filter(
       (facility) => facility.division === division
     );
+
     return facs;
   };
 
@@ -96,7 +98,6 @@ const useFacility = () => {
     getFacilityByDivisions,
     getLocalFacilities,
     getFacility,
-    getFacilitySystems,
     getFacilityUsers,
     getFacilityExceptions,
     getFacilityNameAndId,

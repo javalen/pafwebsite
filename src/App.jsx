@@ -9,6 +9,8 @@ import Exports from "./pages/Exports";
 import AuthContext from "./auth/context";
 import { registerLicense } from "@syncfusion/ej2-base";
 import QRCodes from "./pages/QRCodes";
+import Facilities from "./pages/Facilities";
+import Broadcast from "./pages/Broadcast";
 
 const App = () => {
   const [user, setUser] = useState();
@@ -25,6 +27,8 @@ const App = () => {
             <Route path="home" element={<Home />} />
             <Route path="/exports" element={<Exports />} />
             <Route path="/users" element={<Users />} />
+            <Route path="/properties" element={<Facilities />} />
+            <Route path="/broadcast" element={<Broadcast />} />
             <Route path="*" element={<LoginPage />} />
             <Route path="qr" element={<QRCodes />} />
           </Routes>

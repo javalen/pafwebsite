@@ -17,15 +17,44 @@ const LoginPage = () => {
 
   const login = async (data) => {
     setLoading(true);
-
-    console.log("email", data.email, "password", data.password);
     try {
       const authData = await pb
         .collection("users")
         .authWithPassword(data.email, data.password);
       const user = authData.record;
+      const facility_map = await pb.collection("personel").getList(1, 500, {
+        filter: 'user_id= "' + user.id + '"',
+        fields: "role, fac_id",
+      });
+
+      if (facility_map.items.length == 0) {
+        // Check if user has divisional entries
+        const division_map = await pb
+          .collection("division_user")
+          .getList(1, 500, {
+            filter: 'user_id="' + user.id + '"',
+          });
+
+        if (division_map.items.length > 0) {
+          // get all of the facilities in a given division
+          const facitilies = [];
+          division_map.items.forEach(async (div) => {
+            const division_facs = await pb
+              .collection("facility")
+              .getList(1, 50, {
+                filter: 'division="' + div.division_id + '"',
+              });
+            division_facs.items.forEach(async (fac) => {
+              facitilies.push({ fac_id: fac.id, role: "corp" });
+            });
+            user.facility_map = facitilies;
+          });
+        }
+      } else {
+        // add the map to the user
+        user.facility_map = facility_map.items;
+      }
       auth.logIn(user);
-      console.log("Login Success");
       navigate("/home", { state: user });
     } catch (error) {
       setLoading(false);

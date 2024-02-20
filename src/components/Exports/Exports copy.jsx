@@ -213,7 +213,7 @@ const Exports = () => {
     ssObj?.cellFormat({ textAlign: "left" }, "D9");
     ssObj?.setBorder({ border: "1px solid #0093d0" }, "B2:I20", "Outer");
 
-    ssObj?.insertImage(facilityImg, "B3");
+    ssObj?.insertImage(facilityImg, "B2");
     console.log("Sheet", ssObj);
   };
   return (

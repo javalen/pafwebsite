@@ -11,7 +11,7 @@ const useDivisions = () => {
     let divs = await JSON.parse(localStorage.getItem(DIVISIONS));
 
     if (divs === null || divs?.length === 0) {
-      const newDivs = await getDivs();
+      const newDivs = await getAllDivs();
     }
     return JSON.parse(localStorage.getItem(DIVISIONS));
   };
@@ -19,13 +19,13 @@ const useDivisions = () => {
   const reloadData = async () => {
     const divs = await getLocalDivisions();
     const lastUpdated = new Date(localStorage.getItem(DIVS_LAST_UPATE));
-    if (!lastUpdated) getDivs();
+    if (!lastUpdated) getAllDivs();
     const now = new Date();
     const elapsed = now - lastUpdated;
     let seconds = Math.round(elapsed);
     seconds /= 1000;
     if (divs.length === 0 || seconds > timeOut) {
-      getDivs();
+      getAllDivs();
     }
   };
 
@@ -37,7 +37,7 @@ const useDivisions = () => {
     reloadData();
   });
 
-  const getDivs = async () => {
+  const getAllDivs = async () => {
     try {
       const records = await pb.collection(DIVISIONS).getFullList({});
       const jsonDivs = JSON.stringify(records);
@@ -65,7 +65,7 @@ const useDivisions = () => {
   };
 
   return {
-    getAllDivisions,
+    getLocalDivisions,
     getDivision,
     getDivisionNameAndId,
   };
