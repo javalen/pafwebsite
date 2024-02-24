@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/paf/light_logo.png";
 import pb from "../../api/pocketbase";
 import useAuth from "../../auth/useAuth";
 import { IoCloseOutline } from "react-icons/io5";

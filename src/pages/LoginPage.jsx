@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import Logo from "../assets/logo.png";
+import Logo from "../assets/paf/light_logo.png";
 import { useNavigate } from "react-router-dom";
 import pb from "../api/pocketbase";
 import useAuth from "../auth/useAuth";
@@ -70,7 +70,7 @@ const LoginPage = () => {
           href="#"
           className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
         >
-          <img src={Logo} alt="Logo" className="w-20" />
+          <img src={Logo} alt="Logo" className="flex-1 w-1/4 object-center sm:max-w-md"  />
         </a>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

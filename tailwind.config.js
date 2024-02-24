@@ -7,6 +7,7 @@ export default {
       colors: {
         primary: "#80c157",
         secondary: "#0093d0",
+        background: "#F0F2F3",
         error: "#FF0000",
       },
       container: {
