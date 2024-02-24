@@ -1,68 +1,93 @@
-import { PaperClipIcon } from "@heroicons/react/20/solid";
+import { useEffect, useState } from "react";
+import useSystems from "../../../data/systems";
+import pb from "../../../api/pocketbase";
+import useMaintenance from "../../../data/maintenance";
 
 export default function SystemsDetails({ facility }) {
+  const [systems, setSystems] = useState([]);
+  const [loading, setLoading] = useState();
+  const [dummy, setDummy] = useState("");
+  const systemsData = useSystems();
+  const maintData = useMaintenance();
+
+  const loadSystems = async () => {
+    setLoading(true);
+    try {
+      const records = await systemsData.getFacilitySystems(facility.id);
+      setDummy("hello");
+      setSystems([]);
+      setSystems(await maintData.getRecordsForFacilityAsList(records));
+      setDummy("GoodBye");
+      // records.forEach(async (system) => {
+      //   let maintRec = null;
+      //   try {
+      //     maintRec = await pb
+      //       .collection("maint_record")
+      //       .getFirstListItem(`subsys_id="${system.id}"`, {
+      //         sort: "created",
+      //       });
+      //   } catch (error) {
+      //     console.log("No maint record for ", system.name);
+      //   }
+      //   console.log("adding", system);
+      //   sys.push({
+      //     name: system.name,
+      //     make: system.make,
+      //     model: system.model,
+      //     sn: system.sn,
+      //     img: pb.files.getUrl(system, system.image[0], { thumb: "100x250" }),
+      //     desc: system.desc,
+      //     location: system.location,
+      //     lastService:
+      //       maintRec != null
+      //         ? new Date(maintRec.created).toLocaleDateString
+      //         : "",
+      //     system: system,
+      //     rec: maintRec,
+      //   });
+      // });
+      // console.log("Sys", sys);
+      // return sys;
+    } catch (error) {
+      console.log("Error loading systems", error);
+      setLoading(false);
+    }
+    setLoading(false);
+  };
+
+  const load = async () => {
+    await loadSystems();
+    // setSystems(sys);
+    // setLoading(false);
+  };
+
+  useEffect(() => {
+    load();
+  }, [facility]);
+
   return (
-    <div className="px-4">
-      <div className="">
-        <dl className="grid grid-cols-1 sm:grid-cols-2">
-          <div className="border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">
-              About
-            </dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
-              {facility.description}
-            </dd>
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      {systems.map((sys) => (
+        <div
+          key={sys.system.id}
+          className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
+        >
+          <div className="flex-shrink-0">
+            <img className="h-20 w-20" src={sys.img} alt="" />
           </div>
-          <div className="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">
-              Name
-            </dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
-              {facility.name}
-            </dd>
+          <div className="min-w-0 flex-1">
+            <a href="#" className="focus:outline-none">
+              <span className="absolute inset-0" aria-hidden="true" />
+              <p className="text-sm font-medium text-gray-900">{sys.make}</p>
+              <p className="truncate text-sm text-gray-500">{sys.model}</p>
+              <p className="truncate text-sm text-gray-500">{sys.sn}</p>
+              <p className="truncate text-sm text-gray-500">
+                {sys.lastService}
+              </p>
+            </a>
           </div>
-          <div className="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">
-              Address
-            </dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
-              {facility.address}
-            </dd>
-          </div>
-          <div className="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">
-              City
-            </dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
-              {facility.city}
-            </dd>
-          </div>
-          <div className="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">
-              State
-            </dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
-              {facility.state}
-            </dd>
-          </div>
-          <div className="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">
-              Zipcode
-            </dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
-              {facility.zipcode}
-            </dd>
-          </div>
-          <div className="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">
-              Division
-            </dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
-              {facility.division_name}
-            </dd>
-          </div>
-        </dl>
-      </div>
+        </div>
+      ))}
     </div>
   );
 }
