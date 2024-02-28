@@ -1,6 +1,8 @@
 import { PaperClipIcon } from "@heroicons/react/20/solid";
 
+const clazz = "ExceptionDetails";
 export default function ExceptionDetails({ facility }) {
+  console.log(clazz, "Facility", facility);
   return (
     <div className="px-4">
       <div className="">

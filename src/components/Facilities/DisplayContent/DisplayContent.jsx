@@ -10,6 +10,7 @@ import ExceptionDetails from "./ExceptionDetails";
 import UserDetails from "./UserDetails";
 import ComplianceDetails from "./ComplianceDetails";
 
+const clazz = "DisplayContent";
 const tabs = [
   { name: "Property Details", href: "#", current: true },
   { name: "Compliance", href: "#", current: false },
@@ -18,9 +19,11 @@ const tabs = [
   { name: "Exceptions", href: "#", current: false },
 ];
 
-const DisplayContent = ({ selectedFac, ...props }) => {
+const DisplayContent = ({ selectedFac }) => {
+  console.log(clazz, "Facility", selectedFac);
   const [pageSelection, setPageSelection] = useState("facilityDetails");
   const [selectedTab, setSelectedTab] = useState(0);
+
   const imgUrl = pb.files.getUrl(selectedFac, selectedFac.image[0], {
     thumb: "100x250",
   });
@@ -33,7 +36,6 @@ const DisplayContent = ({ selectedFac, ...props }) => {
   ];
 
   const changeHandler = (index) => {
-    console.log("TopTab clicked", index);
     tabs.forEach((tab, count) => {
       if (count == index) {
         tab.current = true;
@@ -49,7 +51,6 @@ const DisplayContent = ({ selectedFac, ...props }) => {
     <div className="grid w-full h-full bg-slate-200 p-4 dark:bg-slate-200/40">
       <TopTabs onClick={changeHandler} tabs={tabs} />
       {pages[selectedTab]}
-      {/* <FacilityDetails facility={selectedFac} /> */}
     </div>
   );
 };

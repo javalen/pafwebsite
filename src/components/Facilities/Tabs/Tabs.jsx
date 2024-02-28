@@ -46,7 +46,6 @@ export default function Tabs({ selection, ...props }) {
   };
 
   const formatData = (data) => {
-    //console.log("data", data);
     const dataArray = [];
     data.forEach((element) => {
       dataArray.push({

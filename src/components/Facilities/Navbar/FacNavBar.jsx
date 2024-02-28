@@ -33,7 +33,7 @@ const FacNavBar = ({ onPress, buttonAdd, ...props }) => {
   }, []);
 
   return (
-    <div className="py-8 px-4 w-1.5/12 bg-secondary dark:bg-secondary/40">
+    <div className="py-8 px-4 w-1.5/12 bg-paf_secondary dark:bg-paf_secondary/40">
       <h1 className="sm:text-xl text-xl font-bold sm:text-left text-justify mb-3 text-green-200/90">
         View By:
       </h1>
@@ -53,7 +53,7 @@ const FacNavBar = ({ onPress, buttonAdd, ...props }) => {
       <div className="mt-5">
         <button
           type="button"
-          className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+          className="inline-flex items-center rounded-md bg-paf_primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-paf_primary/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
           onClick={buttonAdd}
         >
           Add New Facility

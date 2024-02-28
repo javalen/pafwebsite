@@ -4,16 +4,19 @@ import { useEffect, useState } from "react";
 import pb from "../../../api/pocketbase";
 import SlideOutUserForm from "./SlideOutUserForm";
 
+const clazz = "UserDetails";
 export default function UserDetails({ facility }) {
+  console.log(clazz, "Facility", facility);
   const [personnel, setPersonnel] = useState([]);
   const [openUserForm, setOpenUserForm] = useState(false);
+  const [dummy, setDummy] = useState();
   const userData = usePersonnel();
 
   const loadUsers = async () => {
-    console.log("loadUsers");
     const users = await userData.getFacilityUsers(facility.id);
+    console.log(clazz, "Users", users);
     const people = [];
-    users.forEach((usr) => {
+    await users.forEach(async (usr) => {
       people.push({
         name: usr.expand.user.name,
         role: usr.role,
@@ -25,6 +28,7 @@ export default function UserDetails({ facility }) {
       });
     });
     setPersonnel(people);
+    setDummy("" + Math.random());
   };
 
   const buttonClick = () => {
@@ -43,15 +47,15 @@ export default function UserDetails({ facility }) {
         {personnel.map((person) => (
           <li
             key={person.email}
-            className="col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow"
+            className="col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow dark:bg-gray-900 dark:text-white"
           >
-            <div className="flex flex-1 flex-col p-8">
+            <div className="flex flex-1 flex-col p-8 dark:bg-gray-900 dark:text-white">
               <img
                 className="mx-auto h-32 w-32 flex-shrink-0 rounded-full"
                 src={person.imageUrl}
                 alt=""
               />
-              <h3 className="mt-6 text-sm font-medium text-gray-900">
+              <h3 className="mt-6 text-sm font-medium text-gray-900 dark:bg-gray-900 dark:text-white">
                 {person.name}
               </h3>
               <dl className="mt-1 flex flex-grow flex-col justify-between">
@@ -70,10 +74,11 @@ export default function UserDetails({ facility }) {
                 <div className="flex w-0 flex-1">
                   <a
                     href={`mailto:${person.email}`}
-                    className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
+                    target="emailWin"
+                    className=" dark:bg-gray-900 dark:text-white relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
                   >
                     <EnvelopeIcon
-                      className="h-5 w-5 text-gray-400"
+                      className="h-5 w-5 text-gray-400 dark:bg-gray-900 dark:text-white"
                       aria-hidden="true"
                     />
                     Email
@@ -82,10 +87,11 @@ export default function UserDetails({ facility }) {
                 <div className="-ml-px flex w-0 flex-1">
                   <a
                     href={`tel:${person.telephone}`}
-                    className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
+                    target="callWin"
+                    className="dark:bg-gray-900 dark:text-white relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
                   >
                     <PhoneIcon
-                      className="h-5 w-5 text-gray-400"
+                      className="h-5 w-5 text-gray-400 dark:bg-gray-900 dark:text-white"
                       aria-hidden="true"
                     />
                     Call
@@ -99,7 +105,7 @@ export default function UserDetails({ facility }) {
       <div className="grid mt-5 justify-center">
         <button
           type="button"
-          className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+          className="inline-flex items-center rounded-md bg-paf_primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-paf_primary/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
           onClick={() => setOpenUserForm(!openUserForm)}
         >
           Add New User

@@ -6,14 +6,14 @@ const useFacility = () => {
   pb.autoCancellation(false);
   const LAST_UPATE = "lastUpdated";
   const FACILITIES = "facilities";
-  const timeOut = import.meta.env.VITE;
+  const timeOut = import.meta.env.VITE_FACILITY_TIMEOUT;
 
   //Returns all of the facilities stored in local storage
   const getLocalFacilities = async () => {
     let facs = await JSON.parse(localStorage.getItem(FACILITIES));
 
     if (facs === null || facs?.length === 0) {
-      const newFacs = await getAllFacilities();
+      const newFacs = await reloadAllFaciilities();
     }
     return JSON.parse(localStorage.getItem(FACILITIES));
   };
@@ -21,28 +21,26 @@ const useFacility = () => {
   const reloadData = async () => {
     const facs = await getLocalFacilities();
     const lastUpdated = new Date(localStorage.getItem(LAST_UPATE));
-    if (!lastUpdated) getFacs();
+    if (!lastUpdated) reloadAllFaciilities();
     const now = new Date();
     const elapsed = now - lastUpdated;
     let seconds = Math.round(elapsed);
     seconds /= 1000;
     if (facs.length === 0 || seconds > timeOut) {
-      getAllFacilities();
+      reloadAllFaciilities();
     }
-  };
-
-  const getAllFacilities1 = () => {
-    reloadData();
   };
 
   useEffect(() => {
     reloadData();
   });
 
-  const getAllFacilities = async () => {
+  const reloadAllFaciilities = async () => {
     try {
-      const records = await pb.collection("facility").getFullList({});
-      const jsonFac = JSON.stringify(records);
+      const records = await pb.collection("facility").getList(1, 50, {
+        //filter: "hide=false",
+      });
+      const jsonFac = JSON.stringify(records.items);
       localStorage.setItem(FACILITIES, jsonFac);
       localStorage.setItem(LAST_UPATE, new Date());
       return records;
@@ -53,7 +51,6 @@ const useFacility = () => {
 
   const getFacility = async (id) => {
     const facilities = await getLocalFacilities();
-    console.log("Facilities", facilities);
     const facility = facilities.find((element) => element.id === id);
     return facility;
   };
@@ -77,7 +74,6 @@ const useFacility = () => {
 
   const getFacilityByDivisions = async (division) => {
     const facilities = await getLocalFacilities();
-    console.log("FACILITIES", facilities);
     const facs = facilities.filter(
       (facility) => facility.division === division
     );
@@ -101,6 +97,7 @@ const useFacility = () => {
     getFacilityUsers,
     getFacilityExceptions,
     getFacilityNameAndId,
+    reloadAllFaciilities,
   };
 };
 export default useFacility;

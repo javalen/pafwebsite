@@ -38,7 +38,6 @@ const FacilitiesHero = () => {
         id: e.target.id,
       });
     }
-    console.log("clicked:", e.target.text, e.target.id);
   };
 
   const buttonAddFacility = () => {

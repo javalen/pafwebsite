@@ -5,13 +5,13 @@ const useDivisions = () => {
   pb.autoCancellation(false);
   const DIVS_LAST_UPATE = "divsLastUpdated";
   const DIVISIONS = "divisions";
-  const timeOut = import.meta.env.VITE;
+  const timeOut = import.meta.env.VITE_FACILITY_TIMEOUT;
 
   const getLocalDivisions = async () => {
     let divs = await JSON.parse(localStorage.getItem(DIVISIONS));
 
     if (divs === null || divs?.length === 0) {
-      const newDivs = await getAllDivs();
+      const newDivs = await reloadAllDivs();
     }
     return JSON.parse(localStorage.getItem(DIVISIONS));
   };
@@ -19,13 +19,13 @@ const useDivisions = () => {
   const reloadData = async () => {
     const divs = await getLocalDivisions();
     const lastUpdated = new Date(localStorage.getItem(DIVS_LAST_UPATE));
-    if (!lastUpdated) getAllDivs();
+    if (!lastUpdated) reloadAllDivs();
     const now = new Date();
     const elapsed = now - lastUpdated;
     let seconds = Math.round(elapsed);
     seconds /= 1000;
     if (divs.length === 0 || seconds > timeOut) {
-      getAllDivs();
+      reloadAllDivs();
     }
   };
 
@@ -37,7 +37,7 @@ const useDivisions = () => {
     reloadData();
   });
 
-  const getAllDivs = async () => {
+  const reloadAllDivs = async () => {
     try {
       const records = await pb.collection(DIVISIONS).getFullList({});
       const jsonDivs = JSON.stringify(records);
@@ -68,6 +68,7 @@ const useDivisions = () => {
     getLocalDivisions,
     getDivision,
     getDivisionNameAndId,
+    reloadAllDivs,
   };
 };
 export default useDivisions;

@@ -1,24 +1,72 @@
 import { PaperClipIcon } from "@heroicons/react/20/solid";
-import { Carousel } from "react-responsive-carousel";
+//import { Carousel } from "react-responsive-carousel";
+import { Carousel, IconButton } from "@material-tailwind/react";
 import pb from "../../../api/pocketbase";
 
+const clazz = "FacilityDetails";
 export default function FacilityDetails({ facility }) {
+  console.log(clazz, "Facility", facility);
   return (
     <div className="px-4">
       <div className="grid grid-cols-2">
-        <div className="w-4/4">
-          <Carousel>
-            {facility.image.map((imag, index) => (
-              <div key={index}>
-                <img
-                  key={facility.image[index]}
-                  src={pb.files.getUrl(facility, facility.image[index])}
-                  width={200}
-                />
-                <p className="legend">
-                  {facility.name} {index}
-                </p>
-              </div>
+        <div>
+          <Carousel
+            className="rounded-xl h-3/4 w-3/4"
+            prevArrow={({ handlePrev }) => (
+              <IconButton
+                variant="text"
+                color="white"
+                size="lg"
+                onClick={handlePrev}
+                className="!absolute top-2/4 left-4 -translate-y-2/4"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                  />
+                </svg>
+              </IconButton>
+            )}
+            nextArrow={({ handleNext }) => (
+              <IconButton
+                variant="text"
+                color="white"
+                size="lg"
+                onClick={handleNext}
+                className="!absolute top-2/4 !right-4 -translate-y-2/4"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                  />
+                </svg>
+              </IconButton>
+            )}
+          >
+            {facility.image.map((image, index) => (
+              <img
+                src={pb.files.getUrl(facility, facility.image[index])}
+                alt="image 1"
+                className="h-full w-full object-cover"
+              />
             ))}
           </Carousel>
         </div>

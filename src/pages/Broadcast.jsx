@@ -12,7 +12,6 @@ const Broadcast = () => {
   const [logoutPopup, setLogoutPopup] = React.useState(false);
   const auth = useAuth();
   const handleLogoutPopup = () => {
-    console.log("Logout", !logoutPopup);
     setLogoutPopup(!logoutPopup);
   };
   React.useEffect(() => {

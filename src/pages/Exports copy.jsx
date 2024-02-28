@@ -15,7 +15,6 @@ const Exportsa = () => {
   const [data, setData] = useState([]);
 
   const orderFIelds = async (records) => {
-    console.log("Records", records);
     let recs = [];
     records.forEach((rec) => {
       recs.push({
@@ -38,7 +37,6 @@ const Exportsa = () => {
 
       const data = await orderFIelds(records);
       setData(data);
-      console.log("Data", data);
     } catch (error) {
       console.log(error);
     }
