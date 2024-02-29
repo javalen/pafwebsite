@@ -2,6 +2,8 @@
 
 # dependencies
 node_modules/
+dist/
+dist
 
 # Native
 *.orig.*
@@ -31,3 +33,16 @@ yarn-error.*
 *.tsbuildinfo
 %ProgramData%/Microsoft/Windows/UUS/State/_active.uusver
 
+dist/index.html
+dist/assets/andriod-EVnsN7Wf.svg
+dist/assets/index-qn7fLD8r.css
+dist/assets/index-TnRU_hj8.js
+dist/assets/ios-5lldzYXo.svg
+dist/assets/slick-Zcw5u4Ni.svg
+dist/index.html
+dist/assets/andriod-EVnsN7Wf.svg
+dist/assets/index-qn7fLD8r.css
+dist/assets/index-TnRU_hj8.js
+dist/assets/ios-5lldzYXo.svg
+dist/assets/slick-Zcw5u4Ni.svg
+index.html

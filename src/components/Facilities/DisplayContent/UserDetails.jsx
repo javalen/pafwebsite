@@ -105,7 +105,7 @@ export default function UserDetails({ facility }) {
       <div className="grid mt-5 justify-center">
         <button
           type="button"
-          className="inline-flex items-center rounded-md bg-paf_primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-paf_primary/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+          className="inline-flex items-center rounded-md bg-pmp_primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-pmp_primary/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
           onClick={() => setOpenUserForm(!openUserForm)}
         >
           Add New User

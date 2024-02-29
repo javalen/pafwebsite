@@ -70,7 +70,7 @@ export function SystemDialog({ iSopen, setIsOpen, system }) {
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button
-                    className="rounded-lg text-white bg-paf_secondary background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="rounded-lg text-white bg-pmp_secondary background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
                     onClick={() => setIsOpen(false)}
                   >
@@ -80,7 +80,7 @@ export function SystemDialog({ iSopen, setIsOpen, system }) {
               </div>
             </div>
           </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-paf_secondary"></div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-pmp_secondary"></div>
         </>
       ) : null}
     </>

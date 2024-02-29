@@ -47,7 +47,7 @@ export default function TopTabs({ onClick, tabs }) {
               <span
                 aria-hidden="true"
                 className={classNames(
-                  tab.current ? "bg-paf_secondary" : "bg-transparent",
+                  tab.current ? "bg-pmp_secondary" : "bg-transparent",
                   "absolute inset-x-0 bottom-0 h-0.5"
                 )}
               />

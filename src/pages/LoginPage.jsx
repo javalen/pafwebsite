@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import Logo from "../assets/paf/light_logo.png";
+import Logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import pb from "../api/pocketbase";
 import useAuth from "../auth/useAuth";
@@ -79,7 +79,7 @@ const LoginPage = () => {
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Sign in to PAF Mobile App Manager
+              Sign in to PMP Mobile App Manager
             </h1>
             <form
               onSubmit={handleSubmit((data) => {
@@ -157,7 +157,7 @@ const LoginPage = () => {
               </div>
               <button
                 type="submit"
-                className="w-full text-white bg-paf_primary hover:bg-paf_primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-paf_primary-600 dark:hover:bg-paf_primary-700 dark:focus:ring-primary-800"
+                className="w-full text-white bg-pmp_primary hover:bg-pmp_primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-pmp_primary-600 dark:hover:bg-pmp_primary-700 dark:focus:ring-primary-800"
               >
                 Sign in
               </button>
