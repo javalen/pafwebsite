@@ -30,7 +30,7 @@ const Menu = [
   },
   {
     id: 5,
-    name: "Broadcast",
+    name: "Messaging",
     link: "/broadcast",
   },
 ];

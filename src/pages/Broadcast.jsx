@@ -28,8 +28,8 @@ const Broadcast = () => {
   return (
     <div className="bg-white dark:bg-gray-900 dark:text-white duration-200">
       <Navbar handleLogoutPopup={handleLogoutPopup} />
-      <div className="relative overflow-hidden min-h-[550px] sm:min-h-[650px] bg-gray-100 flex justify-center items-center dark:bg-gray-950 dark:text-white duration-200 ">
-        BroadCast a new message
+      <div className="relative text-blue-700 overflow-hidden min-h-[550px] sm:min-h-[650px] bg-gray-100 flex justify-center items-center dark:bg-gray-950 dark:text-white duration-200 ">
+        Messaging coming soon
       </div>
 
       <Footer />

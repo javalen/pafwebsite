@@ -26,9 +26,12 @@ const Exports = () => {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-gray-900 dark:text-white duration-200">
+    <div className="grid w-full h-full bg-white dark:bg-gray-900 dark:text-white duration-200">
       <Navbar handleLogoutPopup={handleLogoutPopup} />
-      <Hero handleLogoutPopup={handleLogoutPopup} />
+      {/* <Hero handleLogoutPopup={handleLogoutPopup} /> */}
+      <div className="relative overflow-hidden text-blue-700 min-h-[550px] sm:min-h-[650px] bg-gray-100 flex justify-center items-center dark:bg-gray-950 dark:text-white duration-200 ">
+        Exports Coming Soon
+      </div>
       <Footer />
       <LogoutPopup logoutPopup={logoutPopup} setLogoutPopup={setLogoutPopup} />
     </div>
