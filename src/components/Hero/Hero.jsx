@@ -77,7 +77,7 @@ const Hero = ({ handleLogoutPopup }) => {
                   >
                     <button
                       onClick={handleLogoutPopup}
-                      className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-2 px-4 rounded-full"
+                      className="bg-gradient-to-r from-pmp_primary to-pmp_secondary hover:scale-105 duration-200 text-white py-2 px-4 rounded-full"
                     >
                       Login
                     </button>

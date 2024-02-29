@@ -41,7 +41,7 @@ const LogoutPopup = ({ logoutPopup, setLogoutPopup }) => {
                 <div className="flex justify-center">
                   <button
                     onClick={handleSubmit}
-                    className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-1 px-4 rounded-full "
+                    className="bg-gradient-to-r from-pmp_primary to-pmp_secondary hover:scale-105 duration-200 text-white py-1 px-4 rounded-full "
                   >
                     Logout
                   </button>

@@ -115,7 +115,14 @@ export default function Tabs({ selection, ...props }) {
               <DisplayContent selectedFac={selectedFac.facility} />
             </>
           ) : (
-            <div>Make a selection</div>
+            <>
+              <div className="mt-20 text-2xl font-bold text-center text-blue-500">
+                PMP Facilities
+              </div>
+              <div className="mt-5 text-2xl font-medium text-center text-blue-500">
+                Make a selection from the menu on the left
+              </div>
+            </>
           )}
         </>
       )}

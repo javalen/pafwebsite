@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Logo from "../../assets/paf/light_logo.png";
+import Logo from "../../assets/logo.png";
 import pb from "../../api/pocketbase";
 import useAuth from "../../auth/useAuth";
 import { IoCloseOutline } from "react-icons/io5";
@@ -70,7 +70,7 @@ const LoginPopup = ({ orderPopup, setOrderPopup }) => {
                 <div className="flex justify-center">
                   <button
                     onClick={handleSubmit}
-                    className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-1 px-4 rounded-full "
+                    className="bg-gradient-to-r from-pmp_primary to-pmp_secondary hover:scale-105 duration-200 text-white py-1 px-4 rounded-full "
                   >
                     Login
                   </button>
