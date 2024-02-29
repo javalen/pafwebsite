@@ -75,12 +75,12 @@ const Hero = ({ handleLogoutPopup }) => {
                     data-aos-duration="500"
                     data-aos-delay="300"
                   >
-                    <button
+                    {/* <button
                       onClick={handleLogoutPopup}
                       className="bg-gradient-to-r from-pmp_primary to-pmp_secondary hover:scale-105 duration-200 text-white py-2 px-4 rounded-full"
                     >
                       Login
-                    </button>
+                    </button> */}
                   </div>
                 </div>
                 {/* image section */}

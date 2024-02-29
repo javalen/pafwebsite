@@ -243,7 +243,7 @@ export default function SlideOutUserForm({ open, setOpen }) {
                                         htmlFor="privacy-private"
                                         className="font-medium text-gray-900"
                                       >
-                                        Private to you
+                                        Private to you all
                                       </label>
                                       <p
                                         id="privacy-private-description"

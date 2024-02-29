@@ -100,6 +100,7 @@ const Navbar = ({ handleLogoutPopup }) => {
               <Link
                 to={data.link}
                 className="inline-block px-4 hover:text-primary duration-200"
+                target={data.link.target}
               >
                 {data.name}
               </Link>
