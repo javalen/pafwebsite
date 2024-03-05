@@ -1,17 +1,7 @@
-import { Fragment, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import {
-  Bars3Icon,
-  CalendarIcon,
-  ChartPieIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
-  HomeIcon,
-  UsersIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Fragment, useEffect, useState } from "react";
 import FacNavBar from "./Navbar/FacNavBar";
 import Hero from "./Hero/Hero";
+import { AddEditFacilityDialog } from "./AddEditFacility/AddEditFacilityDialog";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -19,6 +9,17 @@ function classNames(...classes) {
 
 const FacilitiesHero = () => {
   const [selectedLink, setSelectedLink] = useState();
+  const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [dummy, setDummy] = useState("");
+  const [render, setRender] = useState("");
+  const onFocus = () => setFocused(true);
+  const onBlur = () => setFocused(false);
+
+  const buttonClick = () => {
+    console.log("clicked");
+    setOpenAddDialog(!openAddDialog);
+    setDummy("" + Math.random());
+  };
 
   const click = (e) => {
     const selection = e.target.text;
@@ -40,18 +41,16 @@ const FacilitiesHero = () => {
     }
   };
 
-  const buttonAddFacility = () => {
-    setSelectedLink({
-      type: "add",
-      id: "",
-    });
-  };
-
+  useEffect(() => {}, [openAddDialog]);
   return (
     <div className="flex flex-row h-screen overflow-scroll">
-      <FacNavBar onPress={click} buttonAdd={buttonAddFacility} />
-
+      <FacNavBar onPress={click} buttonAdd={buttonClick} reRender={render} />
       <Hero selectedLink={selectedLink} />
+      <AddEditFacilityDialog
+        isOpen={openAddDialog}
+        setIsOpen={setOpenAddDialog}
+        reRender={setRender}
+      />
     </div>
   );
 };

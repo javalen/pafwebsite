@@ -2,9 +2,11 @@ import { PaperClipIcon } from "@heroicons/react/20/solid";
 //import { Carousel } from "react-responsive-carousel";
 import { Carousel, IconButton } from "@material-tailwind/react";
 import pb from "../../../api/pocketbase";
-
+import { useState } from "react";
+import { AddEditFacilityDialog } from "../AddEditFacility/AddEditFacilityDialog";
 const clazz = "FacilityDetails";
 export default function FacilityDetails({ facility }) {
+  const [openAddDialog, setOpenAddDialog] = useState(false);
   console.log(clazz, "Facility", facility);
   return (
     <div className="px-4">
@@ -131,6 +133,20 @@ export default function FacilityDetails({ facility }) {
           </dl>
         </div>
       </div>
+      <div className="grid mt-5 justify-center">
+        <button
+          type="button"
+          className="inline-flex items-center rounded-md bg-pmp_primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-pmp_primary/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+          onClick={() => setOpenAddDialog(!openAddDialog)}
+        >
+          Edit Facility
+        </button>
+      </div>
+      <AddEditFacilityDialog
+        isOpen={openAddDialog}
+        setIsOpen={setOpenAddDialog}
+        facility={facility}
+      />
     </div>
   );
 }

@@ -4,10 +4,12 @@ import Logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import pb from "../api/pocketbase";
 import useAuth from "../auth/useAuth";
+import useFacility from "../data/facility";
 
 const LoginPage = () => {
   const [loading, setLoading] = useState();
   const auth = useAuth();
+  const facilityData = useFacility();
   const navigate = useNavigate();
   const {
     register,
@@ -22,6 +24,7 @@ const LoginPage = () => {
         .collection("users")
         .authWithPassword(data.email, data.password);
       const user = authData.record;
+      facilityData.reloadAllFaciilities();
       const facility_map = await pb.collection("personel").getList(1, 500, {
         filter: 'user_id= "' + user.id + '"',
         fields: "role, fac_id",

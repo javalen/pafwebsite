@@ -4,14 +4,17 @@ import { useEffect } from "react";
 import useFacility from "../../../data/facility";
 
 const menuItems = [{ name: "All", value: "all", type: "all" }];
+const clazz = "FacNavBar";
 
-const FacNavBar = ({ onPress, buttonAdd, ...props }) => {
+const FacNavBar = ({ onPress, buttonAdd, reRender }) => {
   const [loading, setLoading] = useState(false);
   const [navItems, setNavItems] = useState([]);
   const facilityData = useFacility();
   const divisionData = useDivisions();
+  console.log(clazz, "Creating!");
 
   const loadNavItems = async () => {
+    console.log(clazz, "loadNavItems");
     setLoading(true);
     const divList = await divisionData.getDivisionNameAndId();
 
@@ -30,7 +33,7 @@ const FacNavBar = ({ onPress, buttonAdd, ...props }) => {
 
   useEffect(() => {
     load();
-  }, []);
+  }, [reRender]);
 
   return (
     <div className="py-8 px-4 w-1.5/12 bg-pmp_secondary dark:bg-pmp_secondary/40">

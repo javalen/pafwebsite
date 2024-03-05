@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import pb from "../api/pocketbase";
 import { json } from "react-router-dom";
 
+const clazz = "useFacility()";
 const useFacility = () => {
   pb.autoCancellation(false);
   const LAST_UPATE = "lastUpdated";
@@ -11,7 +12,7 @@ const useFacility = () => {
   //Returns all of the facilities stored in local storage
   const getLocalFacilities = async () => {
     let facs = await JSON.parse(localStorage.getItem(FACILITIES));
-
+    console.log(clazz, "facs", facs);
     if (facs === null || facs?.length === 0) {
       const newFacs = await reloadAllFaciilities();
     }
@@ -36,13 +37,15 @@ const useFacility = () => {
   });
 
   const reloadAllFaciilities = async () => {
+    console.log(clazz, "reloadAllFaciilities");
     try {
-      const records = await pb.collection("facility").getList(1, 50, {
+      const records = await pb.collection("facility").getList(1, 5000, {
         //filter: "hide=false",
       });
       const jsonFac = JSON.stringify(records.items);
       localStorage.setItem(FACILITIES, jsonFac);
       localStorage.setItem(LAST_UPATE, new Date());
+      console.log(clazz, "Reloading facilities", records);
       return records;
     } catch (error) {
       console.log(error);
@@ -81,9 +84,23 @@ const useFacility = () => {
     return facs;
   };
 
+  const setFacility = async (facility) => {
+    const facs = await getLocalFacilities();
+    const newFacs = facs.forEach(async (fac) => {
+      if (fac.id === facility.id) {
+        return facility;
+      } else return fac;
+    });
+
+    const jsonFac = JSON.stringify(newFacs);
+    localStorage.setItem(FACILITIES, jsonFac);
+    localStorage.setItem(LAST_UPATE, new Date());
+  };
+
   const getFacilityNameAndId = async () => {
     const list = [];
     const facilities = await getLocalFacilities();
+    console.log(clazz, "facility list", facilities);
     facilities.forEach((fac) => {
       list.push({ name: fac.name, value: fac.id });
     });
@@ -91,6 +108,7 @@ const useFacility = () => {
   };
 
   return {
+    setFacility,
     getFacilityByDivisions,
     getLocalFacilities,
     getFacility,

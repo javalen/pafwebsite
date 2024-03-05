@@ -13,6 +13,7 @@ const useDivisions = () => {
     if (divs === null || divs?.length === 0) {
       const newDivs = await reloadAllDivs();
     }
+
     return JSON.parse(localStorage.getItem(DIVISIONS));
   };
 
@@ -64,11 +65,21 @@ const useDivisions = () => {
     return list;
   };
 
+  const getDivisions = async () => {
+    const list = [];
+    const divisions = await getLocalDivisions();
+    divisions.forEach((div) => {
+      list.push({ name: div.name, value: div.id });
+    });
+    return list;
+  };
+
   return {
     getLocalDivisions,
     getDivision,
     getDivisionNameAndId,
     reloadAllDivs,
+    getDivisions,
   };
 };
 export default useDivisions;
