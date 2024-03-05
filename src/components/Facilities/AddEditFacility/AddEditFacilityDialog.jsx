@@ -378,7 +378,7 @@ export function AddEditFacilityDialog({ isOpen, setIsOpen, facility }) {
     : useState("");
   const [inputs, setInputs] = useState({});
   const { user, logOut } = useAuth();
-
+  console.log(clazz, "User", user);
   const handleSubmit = async (event) => {
     try {
       const data = new FormData();
@@ -512,12 +512,7 @@ export function AddEditFacilityDialog({ isOpen, setIsOpen, facility }) {
   };
 
   const hasImages = () => {
-    console.log(
-      clazz,
-      "images lentch",
-      images.length > 0 && facImages.length > 0
-    );
-    return images.length > 0 || facImages.length > 0;
+    return images.length > 0 || facImages?.length > 0;
   };
 
   const handleBlur = (e) => {
@@ -709,7 +704,7 @@ export function AddEditFacilityDialog({ isOpen, setIsOpen, facility }) {
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                               >
                                 {facTypes.map((type) =>
-                                  type.value === facility.fac_type ? (
+                                  type.value === facility?.fac_type ? (
                                     <option selected value={type.value}>
                                       {type.label}
                                     </option>
@@ -901,7 +896,7 @@ export function AddEditFacilityDialog({ isOpen, setIsOpen, facility }) {
                                   </div>
                                 </div>
                               ))}
-                              {facImages.map((image, index) => (
+                              {facImages?.map((image, index) => (
                                 <div>
                                   <img
                                     key={index}

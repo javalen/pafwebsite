@@ -1,6 +1,7 @@
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
+import pb from "../../api/pocketbase";
 
 const clazz = "ChangePassword";
 const fields = {
@@ -74,7 +75,7 @@ export default function ChangePassword({ open, setOpen, user }) {
       const data = {
         password: inputs.conf_pass,
         passwordConfirm: inputs.password,
-        oldPassword: user.password,
+        //.oldPassword: user.password,
       };
 
       const record = await pb.collection("users").update(user.id, data);
@@ -191,9 +192,9 @@ export default function ChangePassword({ open, setOpen, user }) {
                 </div>
                 <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
                   <button
-                    type="button"
+                    type="submit"
                     className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
-                    onClick={() => setOpen(false)}
+                    onClick={handleSubmit}
                   >
                     Update Password
                   </button>

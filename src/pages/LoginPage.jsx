@@ -58,6 +58,7 @@ const LoginPage = () => {
         user.facility_map = facility_map.items;
       }
       auth.logIn(user);
+      auth.setUser(user);
       navigate("/home", { state: user });
     } catch (error) {
       setLoading(false);
