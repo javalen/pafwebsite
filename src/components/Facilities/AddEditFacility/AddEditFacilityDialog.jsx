@@ -355,7 +355,12 @@ const states = [
     value: "WY",
   },
 ];
-export function AddEditFacilityDialog({ isOpen, setIsOpen, facility }) {
+export function AddEditFacilityDialog({
+  isOpen,
+  setIsOpen,
+  facility,
+  setReRender,
+}) {
   const divData = useDivisions();
   const facilityData = useFacility();
   const [facImages, setFacImages] = useState(facility?.image);
@@ -406,11 +411,11 @@ export function AddEditFacilityDialog({ isOpen, setIsOpen, facility }) {
       facility
         ? (record = await pb.collection("facility").update(facility.id, data))
         : (record = await pb.collection("facility").create(data));
-      facilityData.reloadAllFaciilities();
+      await facilityData.reloadAllFaciilities();
 
       clear();
       setIsOpen(false);
-      reRender("" + Math.random());
+      setReRender("" + Math.random());
     } catch (error) {
       console.log("Error creating facility", error);
     }

@@ -6,6 +6,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { Fragment } from "react";
 import ChangePassword from "./ChangePassword";
+import LockUser from "./LockUser";
 
 const clazz = "UsersHero";
 let sortObj = [
@@ -23,16 +24,16 @@ const UsersHero = () => {
   const personelData = usePersonnel();
   const [people, setPeople] = useState();
   const [openChangePassword, setOpenChangePassword] = useState(false);
+  const [openLockOut, setOpenLockOut] = useState(false);
   const [dummy, setDummy] = useState("");
   const [user, setUser] = useState({});
 
   const loadAllUsers = async () => {
     try {
+      console.log(clazz, "Loading Users");
       const allUsers = await personelData.getUsersWithFacilities();
       console.log(clazz, "AllUsers", allUsers);
       setPeople(allUsers);
-      setDummy("" + Math.random());
-      setDummy("" + Math.random());
     } catch (error) {
       console.log(clazz, "Error loading all users", error);
     }
@@ -41,6 +42,11 @@ const UsersHero = () => {
   const changeUserPassword = (user) => {
     setUser(user);
     setOpenChangePassword(true);
+  };
+
+  const lockUser = (user) => {
+    setUser(user);
+    setOpenLockOut(true);
   };
 
   const sort = (e) => {
@@ -163,7 +169,7 @@ const UsersHero = () => {
 
   useEffect(() => {
     load();
-  }, []);
+  }, [dummy]);
 
   return (
     <div className="container w-full mt-20 mb-20">
@@ -334,6 +340,7 @@ const UsersHero = () => {
                                   active ? "bg-gray-50" : "",
                                   "block px-3 py-1 text-sm leading-6 text-gray-900"
                                 )}
+                                onClick={() => lockUser(person.expand.user)}
                               >
                                 Block from App
                                 <span className="sr-only">, {person.name}</span>
@@ -354,6 +361,12 @@ const UsersHero = () => {
         open={openChangePassword}
         setOpen={setOpenChangePassword}
         user={user}
+      />
+      <LockUser
+        user={user}
+        open={openLockOut}
+        setOpen={setOpenLockOut}
+        setRender={setDummy}
       />
     </div>
   );

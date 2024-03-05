@@ -6,8 +6,10 @@ import pb from "../api/pocketbase";
 import useAuth from "../auth/useAuth";
 import useFacility from "../data/facility";
 
+const clazz = "LoginPage";
 const LoginPage = () => {
   const [loading, setLoading] = useState();
+  const [err, setErr] = useState("");
   const auth = useAuth();
   const facilityData = useFacility();
   const navigate = useNavigate();
@@ -24,6 +26,7 @@ const LoginPage = () => {
         .collection("users")
         .authWithPassword(data.email, data.password);
       const user = authData.record;
+
       facilityData.reloadAllFaciilities();
       const facility_map = await pb.collection("personel").getList(1, 500, {
         filter: 'user_id= "' + user.id + '"',
@@ -62,6 +65,7 @@ const LoginPage = () => {
       navigate("/home", { state: user });
     } catch (error) {
       setLoading(false);
+      setErr(error.message);
       console.log(" 24 Error logging in [" + error);
     }
     setLoading(false);
@@ -81,6 +85,12 @@ const LoginPage = () => {
           />
         </a>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          {err && (
+            <h1 className="text-xs text-center font-normal leading-tight tracking-tight text-red-600 md:text-2xl dark:text-red-200">
+              Username/Password are invalid
+            </h1>
+          )}
+
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in to PMP Mobile App Manager

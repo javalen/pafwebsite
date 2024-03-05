@@ -75,11 +75,12 @@ export default function ChangePassword({ open, setOpen, user }) {
       const data = {
         password: inputs.conf_pass,
         passwordConfirm: inputs.password,
-        //.oldPassword: user.password,
+        //oldPassword: "user.password",
       };
 
       const record = await pb.collection("users").update(user.id, data);
-      console.log(clazz, "record", record);
+      //await pb.admins.requestPasswordReset(user.email);
+      //console.log(clazz, "record", record);
       setOpen(false);
     } catch (error) {
       console.log("Error updating passowrd", error);

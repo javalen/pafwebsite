@@ -12,11 +12,8 @@ const FacilitiesHero = () => {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [dummy, setDummy] = useState("");
   const [render, setRender] = useState("");
-  const onFocus = () => setFocused(true);
-  const onBlur = () => setFocused(false);
 
   const buttonClick = () => {
-    console.log("clicked");
     setOpenAddDialog(!openAddDialog);
     setDummy("" + Math.random());
   };
@@ -41,7 +38,7 @@ const FacilitiesHero = () => {
     }
   };
 
-  useEffect(() => {}, [openAddDialog]);
+  useEffect(() => {}, [render]);
   return (
     <div className="flex flex-row h-screen overflow-scroll">
       <FacNavBar onPress={click} buttonAdd={buttonClick} reRender={render} />
@@ -49,7 +46,7 @@ const FacilitiesHero = () => {
       <AddEditFacilityDialog
         isOpen={openAddDialog}
         setIsOpen={setOpenAddDialog}
-        reRender={setRender}
+        setReRender={setRender}
       />
     </div>
   );

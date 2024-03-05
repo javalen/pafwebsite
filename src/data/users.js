@@ -3,6 +3,7 @@ import pb from "../api/pocketbase";
 import { json } from "react-router-dom";
 import useFacility from "./facility";
 
+const clazz = "usePersonel()";
 const usePersonnel = () => {
   const facilityData = useFacility();
   pb.autoCancellation(false);
@@ -15,23 +16,23 @@ const usePersonnel = () => {
     let usrs = await JSON.parse(localStorage.getItem(USERS));
 
     if (usrs === null || usrs?.length === 0) {
-      const newUsers = await getAllUsers();
+      const newUsers = await getAllUsersFromDb();
     }
     return JSON.parse(localStorage.getItem(USERS));
   };
 
   //Pulls all of the users from the personel table
-  const getAllUsers = async () => {
+  const getAllUsersFromDb = async () => {
     try {
       const records = await pb.collection("personel").getFullList({
         expand: "user",
       });
-      //return records;
+      console.log(clazz, "users", records);
       const jsonFac = JSON.stringify(records);
       localStorage.setItem(USERS, jsonFac);
       localStorage.setItem(LAST_USER_UPATE, new Date());
     } catch (error) {
-      console.log("Error retrieving users", users);
+      console.log("Error retrieving users", error);
     }
   };
 
@@ -72,19 +73,21 @@ const usePersonnel = () => {
     const users = await getLocalUsers();
 
     const lastUpdated = new Date(localStorage.getItem(LAST_USER_UPATE));
-    if (!lastUpdated) getAllUsers();
+    if (!lastUpdated) getAllUsersFromDb();
     const now = new Date();
     const elapsed = now - lastUpdated;
     let seconds = Math.round(elapsed);
     seconds /= 1000;
     if (users?.length === 0 || seconds > timeOut) {
-      getAllUsers();
+      getAllUsersFromDb();
     }
   };
 
   const loadUsers = async () => {
     await reloadData();
   };
+
+  const setUser = async (user) => {};
 
   useEffect(() => {
     loadUsers();
@@ -95,6 +98,7 @@ const usePersonnel = () => {
     getUsersInRoleForFacility,
     getFacilityUsers,
     getUsersWithFacilities,
+    getAllUsersFromDb,
   };
 };
 export default usePersonnel;

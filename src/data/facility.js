@@ -12,7 +12,6 @@ const useFacility = () => {
   //Returns all of the facilities stored in local storage
   const getLocalFacilities = async () => {
     let facs = await JSON.parse(localStorage.getItem(FACILITIES));
-    console.log(clazz, "facs", facs);
     if (facs === null || facs?.length === 0) {
       const newFacs = await reloadAllFaciilities();
     }
@@ -42,10 +41,10 @@ const useFacility = () => {
       const records = await pb.collection("facility").getList(1, 5000, {
         //filter: "hide=false",
       });
+
       const jsonFac = JSON.stringify(records.items);
       localStorage.setItem(FACILITIES, jsonFac);
       localStorage.setItem(LAST_UPATE, new Date());
-      console.log(clazz, "Reloading facilities", records);
       return records;
     } catch (error) {
       console.log(error);
@@ -100,7 +99,6 @@ const useFacility = () => {
   const getFacilityNameAndId = async () => {
     const list = [];
     const facilities = await getLocalFacilities();
-    console.log(clazz, "facility list", facilities);
     facilities.forEach((fac) => {
       list.push({ name: fac.name, value: fac.id });
     });
