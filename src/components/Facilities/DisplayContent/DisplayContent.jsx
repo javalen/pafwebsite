@@ -23,12 +23,13 @@ const DisplayContent = ({ selectedFac }) => {
   console.log(clazz, "Facility", selectedFac);
   const [pageSelection, setPageSelection] = useState("facilityDetails");
   const [selectedTab, setSelectedTab] = useState(0);
+  const [facility, setFacility] = useState(selectedFac);
 
   const imgUrl = pb.files.getUrl(selectedFac, selectedFac.image[0], {
     thumb: "100x250",
   });
   const pages = [
-    <FacilityDetails facility={selectedFac} />,
+    <FacilityDetails facility={selectedFac} setFacility={setFacility} />,
     <ComplianceDetails facility={selectedFac} />,
     <UserDetails facility={selectedFac} />,
     <SystemsDetails facility={selectedFac} />,

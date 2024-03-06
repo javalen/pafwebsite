@@ -320,8 +320,8 @@ const UsersHero = () => {
                               <a
                                 href="#"
                                 className={classNames(
-                                  active ? "bg-gray-50" : "",
-                                  "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                  active ? "bg-gray-100" : "",
+                                  "block px-3 py-1 text-xs leading-6 text-gray-900"
                                 )}
                                 onClick={() =>
                                   changeUserPassword(person.expand.user)
@@ -337,8 +337,8 @@ const UsersHero = () => {
                               <a
                                 href="#"
                                 className={classNames(
-                                  active ? "bg-gray-50" : "",
-                                  "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                  active ? "bg-gray-100" : "",
+                                  "block px-3 py-1 text-xs leading-6 text-gray-900"
                                 )}
                                 onClick={() => lockUser(person.expand.user)}
                               >
