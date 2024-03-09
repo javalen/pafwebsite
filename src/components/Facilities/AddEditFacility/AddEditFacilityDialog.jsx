@@ -383,7 +383,6 @@ export function AddEditFacilityDialog({
     : useState("");
   const [inputs, setInputs] = useState({});
   const { user, logOut } = useAuth();
-  console.log(clazz, "User", user);
   const handleSubmit = async (event) => {
     try {
       const data = new FormData();
@@ -424,7 +423,6 @@ export function AddEditFacilityDialog({
   const validateForm = (e) => {
     e.preventDefault();
     let valid = true;
-    console.log(clazz, fields);
     if (!fields.name.valid) {
       setValidationErr("Problem with Name field");
       return;
@@ -457,7 +455,6 @@ export function AddEditFacilityDialog({
       setValidationErr("Problem with Description field");
       return;
     }
-    console.log(clazz, "hasImage", hasImages());
     if (!hasImages()) {
       setValidationErr("Problem with Image please update and resubmit");
       return;
@@ -558,13 +555,11 @@ export function AddEditFacilityDialog({
         fls.push(files[cnt]);
       }
     });
-    console.log(clazz, "removeImage", imgs, fls);
     setFiles(fls);
     setImages(imgs);
   };
 
   const removeFacImage = async (index) => {
-    console.log(clazz, "removing ", facility.image[index]);
     try {
       await pb.collection("facility").update(facility.id, {
         "image-": [facility.image[index]],
@@ -591,10 +586,8 @@ export function AddEditFacilityDialog({
     }
 
     Object.entries(fields).forEach((field) => {
-      console.log(clazz, "field", field);
       field[1].valid = true;
     });
-    console.log(clazz, "fields", fields);
   };
   const load = async () => {
     loadDivisions();

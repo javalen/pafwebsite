@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Tabs from "../Tabs/Tabs";
+import FaciilityTabsContent from "../Tabs/FacilityTabsContent";
 import pb from "../../../api/pocketbase";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
@@ -29,7 +29,7 @@ const DisplayContent = ({ selectedFac }) => {
     thumb: "100x250",
   });
   const pages = [
-    <FacilityDetails facility={selectedFac} setFacility={setFacility} />,
+    <FacilityDetails facility={selectedFac} />,
     <ComplianceDetails facility={selectedFac} />,
     <UserDetails facility={selectedFac} />,
     <SystemsDetails facility={selectedFac} />,

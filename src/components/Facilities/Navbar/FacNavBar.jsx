@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useDivisions from "../../../data/divisions";
 import { useEffect } from "react";
 import useFacility from "../../../data/facility";
+import { Link } from "react-router-dom";
 
 const menuItems = [{ name: "All", value: "all", type: "all" }];
 const clazz = "FacNavBar";
@@ -11,10 +12,8 @@ const FacNavBar = ({ onPress, buttonAdd, reRender }) => {
   const [navItems, setNavItems] = useState([]);
   const facilityData = useFacility();
   const divisionData = useDivisions();
-  console.log(clazz, "Creating!");
 
   const loadNavItems = async () => {
-    console.log(clazz, "loadNavItems");
     setLoading(true);
     const divList = await divisionData.getDivisionNameAndId();
 

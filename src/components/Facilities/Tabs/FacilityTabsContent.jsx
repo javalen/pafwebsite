@@ -8,7 +8,9 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Tabs({ selection, ...props }) {
+const clazz = "FaciilityTabsContent";
+export default function FaciilityTabsContent({ selection, ...props }) {
+  console.log(clazz, "loading, selection=", selection);
   const facilityData = useFacility();
   const divisionData = useDivisions();
   const [dummy, setDummy] = useState();

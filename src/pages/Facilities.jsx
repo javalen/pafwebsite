@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import useAuth from "../auth/useAuth";
 import FacilitiesHero from "../components/Facilities/FacilitiesHero";
 
+const clazz = "Facilities";
 const Facilities = () => {
   const [logoutPopup, setLogoutPopup] = React.useState(false);
   const auth = useAuth();

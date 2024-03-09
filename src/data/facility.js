@@ -45,6 +45,7 @@ const useFacility = () => {
       const jsonFac = JSON.stringify(records.items);
       localStorage.setItem(FACILITIES, jsonFac);
       localStorage.setItem(LAST_UPATE, new Date());
+      console.log(clazz, "All Facilities", records);
       return records;
     } catch (error) {
       console.log(error);
@@ -85,11 +86,8 @@ const useFacility = () => {
 
   const setFacility = async (facility) => {
     const facs = await getLocalFacilities();
-    const newFacs = facs.forEach(async (fac) => {
-      if (fac.id === facility.id) {
-        return facility;
-      } else return fac;
-    });
+    const newFacs = facs.filter((fac) => facility != fac.id);
+    newFacs.push(facility);
 
     const jsonFac = JSON.stringify(newFacs);
     localStorage.setItem(FACILITIES, jsonFac);

@@ -2,18 +2,11 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
-const clazz = "ConfirmHideFacility";
-export default function ConfirmHideFacility({
-  open,
-  setOpen,
-  hide,
-  setContinue,
-}) {
-  const message = hide
-    ? `Are you sure you want to publish this facility to the mobile app?`
-    : `Are you sure you want to hide this facility from the mobile app?`;
+const clazz = "ConfirmDeleteFacility";
+export default function ConfirmDeleteFacility({ open, setOpen, setContinue }) {
+  const message = `Are you sure you want to delete this facility? This cannot be undone!`;
 
-  const continueShowHide = () => {
+  const continueDelete = () => {
     setContinue(true);
     setOpen(false);
   };
@@ -56,7 +49,7 @@ export default function ConfirmHideFacility({
                       as="h3"
                       className="text-base font-semibold leading-6 text-gray-900"
                     >
-                      Facility Viewable in App?
+                      Delete Facility?
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">{message}</p>
@@ -67,9 +60,9 @@ export default function ConfirmHideFacility({
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                    onClick={() => continueShowHide(true)}
+                    onClick={() => continueDelete(true)}
                   >
-                    Continue
+                    Delete
                   </button>
                   <button
                     type="button"

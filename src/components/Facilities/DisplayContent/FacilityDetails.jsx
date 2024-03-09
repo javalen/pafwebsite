@@ -7,38 +7,63 @@ import { AddEditFacilityDialog } from "../AddEditFacility/AddEditFacilityDialog"
 import { Switch } from "@headlessui/react";
 import ConfirmHideFacility from "./Dialogs/ConfirmHideFacility";
 import useFacility from "../../../data/facility";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import ConfirmDeleteFacility from "./Dialogs/ConfirmDeleteFacility";
+import { useNavigate } from "react-router-dom";
+import routes from "../../../navigate/routes";
 
 const clazz = "FacilityDetails";
-export default function FacilityDetails({ facility, setFacility }) {
+export default function FacilityDetails({ facility }) {
   const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [hide, setHide] = useState(facility.hide);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [contDelete, setContDelete] = useState(false);
   const [cont, setCont] = useState(false);
   const [dummy, setDummy] = useState("");
   const facilityData = useFacility();
-  console.log(clazz, "Facililty", facility.hide);
+  const navigate = useNavigate();
+
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(" ");
+  }
+
   const hideMsg = hide
     ? "This facility is not shown in the mobile app. Toggle to have it show."
     : "This facility is currently shown in the mobile app. Toggle to hide it.";
 
+  let class1 = hide
+    ? "bg-red-500 relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-00 focus:ring-offset-2"
+    : "bg-pmp_primary relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-00 focus:ring-offset-2";
+
+  let class2 = hide
+    ? "translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+    : "translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out";
+
   const updateHideFacility = async () => {
     try {
       const data = {
-        hide: !hide,
+        hide: !facility.hide,
       };
 
       const record = await pb.collection("facility").update(facility.id, data);
       await facilityData.reloadAllFaciilities();
+      console.log(clazz, "record", record);
       setCont(false);
+      await facilityData.setFacility(record);
       setHide(record.hide);
-      setFacility(record);
-      setDummy("" + Math.random());
+      //setDummy("" + Math.random());
     } catch (error) {
       console.log("Error updating show/hide facility", error);
+    }
+  };
+
+  const deleteFacility = async () => {
+    try {
+      console.log(clazz, "Deleting Facility");
+      navigate(routes.PROPERTIES);
+    } catch (error) {
+      console.log(clazz, "Error deleting Facility", error);
     }
   };
 
@@ -46,12 +71,21 @@ export default function FacilityDetails({ facility, setFacility }) {
     setShowConfirm(true);
   };
 
-  const load = async () => {
-    if (cont) await updateHideFacility();
+  const handleDeleteFacility = async () => {
+    setOpenDeleteDialog(true);
+    //setContDelete(true);
   };
+
+  const load = async () => {
+    setHide(facility.hide);
+    console.log(clazz, "Loading ");
+    if (cont) await updateHideFacility();
+    if (contDelete) await deleteFacility();
+  };
+
   useEffect(() => {
     load();
-  }, [cont]);
+  }, [cont, facility, hide]);
   return (
     <div className="px-4">
       <div className="grid grid-cols-2">
@@ -118,24 +152,15 @@ export default function FacilityDetails({ facility, setFacility }) {
         </div>
         <div className="p-4">
           <dl className="grid grid-cols-1 sm:grid-cols-2">
-            <div>
+            <div className="grid col-span-2">
               {" "}
               <Switch.Group as="div" className="flex items-center">
                 <Switch
-                  checked={hide}
+                  checked={facility.hide}
                   onChange={handleHideFacility}
-                  className={classNames(
-                    facility.hide ? "bg-red-500" : "bg-pmp_primary",
-                    "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-00 focus:ring-offset-2"
-                  )}
+                  className={`${class1}`}
                 >
-                  <span
-                    aria-hidden="true"
-                    className={classNames(
-                      facility.hide ? "translate-x-5" : "translate-x-0",
-                      "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
-                    )}
-                  />
+                  <span aria-hidden="true" className={`${class2}`} />
                 </Switch>
                 <Switch.Label as="span" className="grid col-span-3 ml-5 text-m">
                   <div className="grid col-span-2">
@@ -146,7 +171,7 @@ export default function FacilityDetails({ facility, setFacility }) {
                 </Switch.Label>
               </Switch.Group>
             </div>
-            <div className="border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0">
+            <div className="border-t border-gray-100 px-4 py-5 sm:col-span-2 sm:px-0">
               <dt className="text-sm font-medium leading-6 text-gray-900">
                 About
               </dt>
@@ -154,7 +179,7 @@ export default function FacilityDetails({ facility, setFacility }) {
                 {facility.description}
               </dd>
             </div>
-            <div className="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
+            <div className="border-t border-gray-100 px-4 py-5 sm:col-span-1 sm:px-0">
               <dt className="text-sm font-medium leading-6 text-gray-900">
                 Name
               </dt>
@@ -162,7 +187,7 @@ export default function FacilityDetails({ facility, setFacility }) {
                 {facility.name}
               </dd>
             </div>
-            <div className="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
+            <div className="border-t border-gray-100 px-4 py-5 sm:col-span-1 sm:px-0">
               <dt className="text-sm font-medium leading-6 text-gray-900">
                 Address
               </dt>
@@ -170,7 +195,7 @@ export default function FacilityDetails({ facility, setFacility }) {
                 {facility.address}
               </dd>
             </div>
-            <div className="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
+            <div className="border-t border-gray-100 px-4 py-5 sm:col-span-1 sm:px-0">
               <dt className="text-sm font-medium leading-6 text-gray-900">
                 City
               </dt>
@@ -178,7 +203,7 @@ export default function FacilityDetails({ facility, setFacility }) {
                 {facility.city}
               </dd>
             </div>
-            <div className="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
+            <div className="border-t border-gray-100 px-4 py-5 sm:col-span-1 sm:px-0">
               <dt className="text-sm font-medium leading-6 text-gray-900">
                 State
               </dt>
@@ -186,7 +211,7 @@ export default function FacilityDetails({ facility, setFacility }) {
                 {facility.state}
               </dd>
             </div>
-            <div className="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
+            <div className="border-t border-gray-100 px-4 py-5 sm:col-span-1 sm:px-0">
               <dt className="text-sm font-medium leading-6 text-gray-900">
                 Zipcode
               </dt>
@@ -194,7 +219,7 @@ export default function FacilityDetails({ facility, setFacility }) {
                 {facility.zipcode}
               </dd>
             </div>
-            <div className="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
+            <div className="border-t border-gray-100 px-4 py-5 sm:col-span-1 sm:px-0">
               <dt className="text-sm font-medium leading-6 text-gray-900">
                 Division
               </dt>
@@ -205,15 +230,27 @@ export default function FacilityDetails({ facility, setFacility }) {
           </dl>
         </div>
       </div>
-      <div className="grid mt-5 justify-center">
-        <button
-          type="button"
-          className="inline-flex items-center rounded-md bg-pmp_primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-pmp_primary/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-          onClick={() => setOpenAddDialog(!openAddDialog)}
-        >
-          Edit Facility
-        </button>
+      <div className="flex justify-center">
+        <div className="">
+          <button
+            type="button"
+            className="mr-5 inline-flex items-center rounded-md bg-pmp_primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-pmp_primary/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+            onClick={() => setOpenAddDialog(!openAddDialog)}
+          >
+            Edit Facility
+          </button>
+        </div>
+        <div className="content-evenly">
+          <button
+            type="button"
+            className="inline-flex items-center rounded-md bg-red-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+            onClick={handleDeleteFacility}
+          >
+            Delete Facility
+          </button>
+        </div>
       </div>
+
       <AddEditFacilityDialog
         isOpen={openAddDialog}
         setIsOpen={setOpenAddDialog}
@@ -224,6 +261,11 @@ export default function FacilityDetails({ facility, setFacility }) {
         setOpen={setShowConfirm}
         hide={hide}
         setContinue={setCont}
+      />
+      <ConfirmDeleteFacility
+        open={openDeleteDialog}
+        setOpen={setOpenDeleteDialog}
+        setContinue={setContDelete}
       />
     </div>
   );

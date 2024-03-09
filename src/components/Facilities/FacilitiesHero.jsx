@@ -7,6 +7,8 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+const clazz = "FacilitiesHero";
+
 const FacilitiesHero = () => {
   const [selectedLink, setSelectedLink] = useState();
   const [openAddDialog, setOpenAddDialog] = useState(false);

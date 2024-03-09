@@ -31,12 +31,6 @@ const Home = () => {
       <Navbar handleLogoutPopup={handleLogoutPopup} />
       <Hero handleLogoutPopup={handleLogoutPopup} />
       <Products />
-      {/* 
-      <TopProducts handleLogoutPopup={handleLogoutPopup} />
-      <Banner />
-      <Subscribe />
-      <Products />
-      <Testimonials /> */}
       <Footer />
       <LogoutPopup logoutPopup={logoutPopup} setLogoutPopup={setLogoutPopup} />
     </div>
