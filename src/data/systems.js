@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
 import pb from "../api/pocketbase";
-import { json } from "react-router-dom";
+import useService from "./service";
+import useMaintenance from "./maintenance";
 
+const clazz = "useSystems()";
 const useSystems = () => {
   pb.autoCancellation(false);
   const LAST_SYSTEM_UPATE = "lastUserUpdated";
   const SYSTEMS = "subsys";
   const timeOut = import.meta.env.VITE_FACILITY_TIMEOUT;
+  const svcData = useService();
+  const maintData = useMaintenance();
 
   //Returns all of the facilities stored in local storage
   const getLocalSystems = async () => {
@@ -36,6 +39,27 @@ const useSystems = () => {
     return results;
   };
 
+  const deleteFacilitySystems = async (id) => {
+    try {
+      const systems = await getFacilitySystems(id);
+      systems.forEach(async (sys) => {
+        // Delete the maint records
+        await maintData.deleteMaintRecordsForSys(id);
+
+        //Delete maint scheds for system
+        await maintData.deleteMaintScheduleForSys(id);
+
+        //Delete any service Records
+        await svcData.deleteServiceForSystem(sys.id);
+
+        //Delete the system
+        await pb.collection("subsys").delete(sys.id);
+      });
+    } catch (error) {
+      console.log(clazz, "Error deleting systems for ", id);
+    }
+  };
+
   const reloadData = async () => {
     const systems = await getLocalSystems();
 
@@ -54,6 +78,6 @@ const useSystems = () => {
     await reloadData();
   };
 
-  return { getFacilitySystems, reloadAllSystems };
+  return { getFacilitySystems, reloadAllSystems, deleteFacilitySystems };
 };
 export default useSystems;

@@ -7,6 +7,7 @@ export default function ConfirmDeleteFacility({ open, setOpen, setContinue }) {
   const message = `Are you sure you want to delete this facility? This cannot be undone!`;
 
   const continueDelete = () => {
+    console.log(clazz, "ConfirmDelete");
     setContinue(true);
     setOpen(false);
   };

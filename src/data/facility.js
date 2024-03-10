@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import pb from "../api/pocketbase";
-import { json } from "react-router-dom";
+import useSystems from "./systems";
+import useCompliance from "./compliance";
 
 const clazz = "useFacility()";
 const useFacility = () => {
@@ -8,6 +9,8 @@ const useFacility = () => {
   const LAST_UPATE = "lastUpdated";
   const FACILITIES = "facilities";
   const timeOut = import.meta.env.VITE_FACILITY_TIMEOUT;
+  const systemData = useSystems();
+  const compData = useCompliance();
 
   //Returns all of the facilities stored in local storage
   const getLocalFacilities = async () => {
@@ -16,6 +19,37 @@ const useFacility = () => {
       const newFacs = await reloadAllFaciilities();
     }
     return JSON.parse(localStorage.getItem(FACILITIES));
+  };
+
+  const deleteFacility = async (facility) => {
+    try {
+      // Delete all the systems first (this will also delete the service records and warranty)
+      await systemData.deleteFacilitySystems(facility.id);
+
+      // Delete compliance docs
+      await compData.deleteFacilityCompDocs(facility.id);
+
+      // Delete safety docs
+      await compData.deleteFacilitySafetyDocs(facility.id);
+
+      //Delete the personel records for the facilty
+      const resultList = await pb.collection("personel").getList(1, 5000, {
+        filter: `fac_id="${facility.id}"`,
+      });
+
+      console.log(clazz, "Deleting users for ", facility.id);
+      resultList.items.forEach(async (person) => {
+        await pb.collection("personel").delete(person.id);
+      });
+
+      // Delete the facility
+      console.log(clazz, "Deleting facility ", facility.id);
+      await pb.collection("facility").delete(facility.id);
+
+      localStorage.removeItem(FACILITIES);
+    } catch (error) {
+      console.log(clazz, "Error deleting ", facility.name, error);
+    }
   };
 
   const reloadData = async () => {
@@ -31,9 +65,9 @@ const useFacility = () => {
     }
   };
 
-  useEffect(() => {
-    reloadData();
-  });
+  // useEffect(() => {
+  //   reloadData();
+  // });
 
   const reloadAllFaciilities = async () => {
     console.log(clazz, "reloadAllFaciilities");
@@ -112,6 +146,7 @@ const useFacility = () => {
     getFacilityExceptions,
     getFacilityNameAndId,
     reloadAllFaciilities,
+    deleteFacility,
   };
 };
 export default useFacility;

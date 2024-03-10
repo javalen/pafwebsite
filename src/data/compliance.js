@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import pb from "../api/pocketbase";
 import { json } from "react-router-dom";
 
+const clazz = "useCompliance()";
+
 const useCompliance = () => {
   pb.autoCancellation(false);
   const LAST_COMP_UPATE = "lastMaintUpdated";
@@ -32,9 +34,9 @@ const useCompliance = () => {
     }
   };
 
-  useEffect(() => {
-    reloadData();
-  });
+  // useEffect(() => {
+  //   reloadData();
+  // });
 
   const reloadAllCompDocs = async () => {
     try {
@@ -54,10 +56,31 @@ const useCompliance = () => {
     return rec;
   };
 
+  const deleteFacilityCompDocs = async (id) => {
+    console.log(clazz, "Deleting Comp docs for ", id);
+    const docs = await getCompDocsByFacId(id);
+    docs.forEach(async (doc) => {
+      try {
+        await pb.collection("facility_compliance").delete(doc.id);
+      } catch (error) {
+        console.log(clazz, "Error deleting comp doc for ", doc.id);
+      }
+    });
+  };
+
+  const addCompDocToLocalStorage = async (doc) => {
+    const records = await getLocalCompDocs();
+    records.push(doc);
+
+    const jsonFac = JSON.stringify(records);
+    localStorage.setItem(COMPLIANCE, jsonFac);
+    localStorage.setItem(LAST_COMP_UPATE, new Date());
+  };
+
   const getCompDocsByTypeAndFacId = async (id, type) => {
     const records = await getLocalCompDocs();
     const rec = records.filter(
-      (element) => element.fac_id === id && element.type === type
+      (element) => element?.fac_id === id && element?.type === type
     );
     return rec;
   };
@@ -90,6 +113,27 @@ const useCompliance = () => {
     return rec;
   };
 
+  const deleteFacilitySafetyDocs = async (id) => {
+    console.log(clazz, "Deleting safety docs for ", id);
+    const docs = await getSafetyDocsForFacility(id);
+    docs.forEach(async (doc) => {
+      try {
+        await pb.collection("facility_safety_doc").delete(doc.id);
+      } catch (error) {
+        console.log(clazz, "Error deletin safety doc for ", doc.id);
+      }
+    });
+  };
+
+  const addSafetyDocToLocalStorage = async (doc) => {
+    const records = await getLocalSafetyDocs();
+    records.push(doc);
+
+    const jsonFac = JSON.stringify(records);
+    localStorage.setItem(SAFETY, jsonFac);
+    localStorage.setItem(LAST_COMP_UPATE, new Date());
+  };
+
   const getSafetyDocsByTypeAndFacId = async (id, type) => {
     const records = await getLocalSafetyDocs();
     const rec = records.filter(
@@ -107,6 +151,10 @@ const useCompliance = () => {
     getCompDocsByTypeAndFacId,
     reloadAllSafetyDocs,
     reloadAllCompDocs,
+    deleteFacilitySafetyDocs,
+    deleteFacilityCompDocs,
+    addSafetyDocToLocalStorage,
+    addCompDocToLocalStorage,
   };
 };
 export default useCompliance;

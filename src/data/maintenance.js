@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import pb from "../api/pocketbase";
 import { json } from "react-router-dom";
 
+const clazz = "useMaintenance()";
+
 const useMaintenance = () => {
   pb.autoCancellation(false);
   const LAST_MAINT_UPATE = "lastMaintUpdated";
@@ -32,9 +34,9 @@ const useMaintenance = () => {
     }
   };
 
-  useEffect(() => {
-    reloadData();
-  });
+  // useEffect(() => {
+  //   reloadData();
+  // });
 
   const getRecordsForFacilityAsList = async (records) => {
     const sys = [];
@@ -87,12 +89,24 @@ const useMaintenance = () => {
     const rec = records.filter((element) => element.subsys_id === id);
     return rec;
   };
+
   const getMaintRec = async (id) => {
     const records = await getLocalMaintRecs();
     const rec = records.find((element) => element.subsys_id === id);
     return rec;
   };
 
+  const deleteMaintRecordsForSys = async (id) => {
+    console.log(clazz, "Deleting systems for ", id);
+    const records = await getMaintRecsForSysId();
+    records.forEach(async (rec) => {
+      try {
+        await pb.collection("maint_record").delete(rec.id);
+      } catch (error) {
+        console.log(clazz, "Error deleting maint record for ", id);
+      }
+    });
+  };
   //------------------------------------ Maintenance Schedules --------------------------------------
   const getLocalMaintScheds = async () => {
     let recs = await JSON.parse(localStorage.getItem(MAINT_SCHED));
@@ -121,6 +135,17 @@ const useMaintenance = () => {
     return rec;
   };
 
+  const deleteMaintScheduleForSys = async (id) => {
+    const records = await getMaintSchedForSys();
+    records.forEach(async (rec) => {
+      try {
+        await pb.collection("maint_sched").delete(rec.id);
+      } catch (error) {
+        console.log(clazz, "Error deleting main sched for ", id);
+      }
+    });
+  };
+
   return {
     reloadAllMaintRecs,
     getLocalMaintRecs,
@@ -130,6 +155,8 @@ const useMaintenance = () => {
     getRecordsForFacilityAsList,
     getMaintRecsForSysId,
     reloadAllMaintSchedules,
+    deleteMaintRecordsForSys,
+    deleteMaintScheduleForSys,
   };
 };
 export default useMaintenance;

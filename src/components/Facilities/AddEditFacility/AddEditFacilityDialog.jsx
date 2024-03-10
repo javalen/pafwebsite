@@ -383,6 +383,7 @@ export function AddEditFacilityDialog({
     : useState("");
   const [inputs, setInputs] = useState({});
   const { user, logOut } = useAuth();
+
   const handleSubmit = async (event) => {
     try {
       const data = new FormData();

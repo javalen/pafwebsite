@@ -9,13 +9,18 @@ function classNames(...classes) {
 }
 
 const clazz = "FaciilityTabsContent";
-export default function FaciilityTabsContent({ selection, ...props }) {
+export default function FaciilityTabsContent({
+  selection,
+  setSelectedLink,
+  setReRender,
+  ...props
+}) {
   console.log(clazz, "loading, selection=", selection);
   const facilityData = useFacility();
   const divisionData = useDivisions();
   const [dummy, setDummy] = useState();
   const [tabs, setTabs] = useState([]);
-  const [selectedFac, setSelectedFac] = useState();
+  const [selectedFac, setSelectedFac] = useState(selection);
 
   const changeHandler = (name, index) => {
     const arr = tabs;
@@ -73,7 +78,7 @@ export default function FaciilityTabsContent({ selection, ...props }) {
   return (
     <div className="w-full h-full">
       <>
-        {tabs?.length > 0 ? (
+        {tabs?.length > 0 && selection ? (
           <>
             <div className="sm:hidden">
               <label htmlFor="tabs" className="sr-only">
@@ -111,7 +116,11 @@ export default function FaciilityTabsContent({ selection, ...props }) {
                 ))}
               </nav>
             </div>
-            <DisplayContent selectedFac={selectedFac.facility} />
+            <DisplayContent
+              selectedFac={selectedFac.facility}
+              setSelectedLink={setSelectedLink}
+              setReRender={setReRender}
+            />
           </>
         ) : (
           <>

@@ -12,7 +12,11 @@ import { useNavigate } from "react-router-dom";
 import routes from "../../../navigate/routes";
 
 const clazz = "FacilityDetails";
-export default function FacilityDetails({ facility }) {
+export default function FacilityDetails({
+  facility,
+  setSelectedLink,
+  setReRender,
+}) {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [hide, setHide] = useState(facility.hide);
@@ -61,6 +65,9 @@ export default function FacilityDetails({ facility }) {
   const deleteFacility = async () => {
     try {
       console.log(clazz, "Deleting Facility");
+      await facilityData.deleteFacility(facility);
+      setSelectedLink(null);
+      setReRender("" + Math.random());
       navigate(routes.PROPERTIES);
     } catch (error) {
       console.log(clazz, "Error deleting Facility", error);
@@ -85,7 +92,7 @@ export default function FacilityDetails({ facility }) {
 
   useEffect(() => {
     load();
-  }, [cont, facility, hide]);
+  }, [cont, facility, hide, contDelete]);
   return (
     <div className="px-4">
       <div className="grid grid-cols-2">

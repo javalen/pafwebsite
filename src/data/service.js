@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import pb from "../api/pocketbase";
 import { json } from "react-router-dom";
 
+const clazz = "useService()";
+
 const useService = () => {
   pb.autoCancellation(false);
   const LAST_SVC_UPATE = "lastSvcUpdated";
@@ -33,9 +35,25 @@ const useService = () => {
     }
   };
 
-  useEffect(() => {
-    reloadSvcData();
-  });
+  const deleteServiceForSystem = async (id) => {
+    try {
+      const services = await getSvcRecsForSysId(id);
+      services.forEach(async (service) => {
+        //Delete the warranty
+        if (service.warranty)
+          await deleteWarrantyForService(service.warranty_id);
+
+        //Delete the service
+        await pb.collection("service_history").delete(id);
+      });
+    } catch (error) {
+      console.log(clazz, "Error deleting service for ", id);
+    }
+  };
+
+  // useEffect(() => {
+  //   reloadSvcData();
+  // });
 
   const reloadAllSvcRecs = async () => {
     try {
@@ -67,6 +85,28 @@ const useService = () => {
       const newFacs = await reloadAllWrntyRecords();
     }
     return JSON.parse(localStorage.getItem(SYS_WRNTY));
+  };
+
+  const getWarrantyForService = async (id) => {
+    try {
+      const warranties = await getLocalWrntyRecords();
+      const rec = warranties.filter((element) => element.id === id);
+      return rec;
+    } catch (error) {
+      console.log(clazz, "Error getting warranties for service", id);
+    }
+  };
+
+  const deleteWarrantyForService = async (id) => {
+    try {
+      const warranties = await getLocalWrntyRecords();
+      const rec = warranties.filter((element) => element.id === id);
+      rec.forEach(async (warr) => {
+        await pb.collection("sys_warranty").delete(warr.id);
+      });
+    } catch (error) {
+      console.log(clazz, "Error deleting warranties for service", id);
+    }
   };
 
   const reloadAllWrntyRecords = async () => {
@@ -121,6 +161,7 @@ const useService = () => {
     reloadAllSvcRecs,
     reloadAllSvcCompanies,
     reloadAllWrntyRecords,
+    deleteServiceForSystem,
   };
 };
 export default useService;

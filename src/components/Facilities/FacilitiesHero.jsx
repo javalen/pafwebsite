@@ -44,7 +44,11 @@ const FacilitiesHero = () => {
   return (
     <div className="flex flex-row h-screen overflow-scroll">
       <FacNavBar onPress={click} buttonAdd={buttonClick} reRender={render} />
-      <Hero selectedLink={selectedLink} />
+      <Hero
+        selectedLink={selectedLink}
+        setSelectedLink={setSelectedLink}
+        setReRender={setRender}
+      />
       <AddEditFacilityDialog
         isOpen={openAddDialog}
         setIsOpen={setOpenAddDialog}

@@ -19,7 +19,7 @@ const tabs = [
   { name: "Exceptions", href: "#", current: false },
 ];
 
-const DisplayContent = ({ selectedFac }) => {
+const DisplayContent = ({ selectedFac, setSelectedLink, setReRender }) => {
   console.log(clazz, "Facility", selectedFac);
   const [pageSelection, setPageSelection] = useState("facilityDetails");
   const [selectedTab, setSelectedTab] = useState(0);
@@ -29,7 +29,11 @@ const DisplayContent = ({ selectedFac }) => {
     thumb: "100x250",
   });
   const pages = [
-    <FacilityDetails facility={selectedFac} />,
+    <FacilityDetails
+      facility={selectedFac}
+      setSelectedLink={setSelectedLink}
+      setReRender={setReRender}
+    />,
     <ComplianceDetails facility={selectedFac} />,
     <UserDetails facility={selectedFac} />,
     <SystemsDetails facility={selectedFac} />,

@@ -44,6 +44,16 @@ const usePersonnel = () => {
     return facUsers;
   };
 
+  const deleteFacilityUsers = async (id) => {
+    let users = await getFacilityUsers(id);
+    users.forEach(async (user) => {
+      await pb.collection("personel").delete(user.id);
+    });
+
+    console.log("FAcUsers", facUsers);
+    return facUsers;
+  };
+
   //Returns users in the specified role for the specified facility
   const getUsersInRoleForFacility = async (id, role) => {
     let users = await getLocalUsers();
@@ -89,16 +99,13 @@ const usePersonnel = () => {
 
   const setUser = async (user) => {};
 
-  useEffect(() => {
-    loadUsers();
-  });
-
   return {
     getLocalUsers,
     getUsersInRoleForFacility,
     getFacilityUsers,
     getUsersWithFacilities,
     getAllUsersFromDb,
+    deleteFacilityUsers,
   };
 };
 export default usePersonnel;

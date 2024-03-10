@@ -34,9 +34,9 @@ const useDivisions = () => {
     reloadData();
   };
 
-  useEffect(() => {
-    reloadData();
-  });
+  // useEffect(() => {
+  //   reloadData();
+  // });
 
   const reloadAllDivs = async () => {
     try {

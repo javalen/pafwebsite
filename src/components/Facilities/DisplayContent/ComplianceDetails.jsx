@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useCompliance from "../../../data/compliance";
 import { PaperClipIcon } from "@heroicons/react/20/solid";
 import pb from "../../../api/pocketbase";
+import { AddEditDoc } from "../AddEditDoc/AddEditDoc";
 
 const clazz = "ComplianceDetails";
 
@@ -20,15 +21,16 @@ const safeDocs = [
   { type: "Injury Reports", docs: [] },
 ];
 export default function ComplianceDetails({ facility }) {
-  console.log(clazz, "Facility", facility);
   const [compDocs, setCompDocs] = useState([]);
   const [safetyDocs, setSafetyDocs] = useState([]);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [isCompliance, setIsCompliance] = useState(false);
+  const [docType, setDocType] = useState("");
   const [loading, setLoading] = useState(false);
   const [dummy, setDummy] = useState("");
   const docData = useCompliance();
 
   const loadDocs = async () => {
-    console.log(clazz, "Loading docs for ", facility.name);
     clearDocs();
     setLoading(true);
     try {
@@ -66,6 +68,12 @@ export default function ComplianceDetails({ facility }) {
     safeDocs.forEach((doc) => {
       doc.docs = [];
     });
+  };
+
+  const addNewDoc = (isCompliance, docType) => {
+    setIsCompliance(isCompliance);
+    setDocType(docType);
+    setShowAddForm(true);
   };
 
   const load = async () => await loadDocs();
@@ -125,24 +133,30 @@ export default function ComplianceDetails({ facility }) {
               </div>
             </dl>
           </div>
-          <div className="font-medium text-gray-600 text-sm text-center mt-14 dark:text-white">
+          <div className="font-medium text-gray-600 text-sm text-center mt-8 mb-8 dark:text-white">
             Compliance Documents for {facility.name}
           </div>
           {complianceDocs.map((doc) => (
             <div key={doc.type} className="py-2">
-              <details className="group">
-                <summary className="flex justify-between items-center font-medium cursor-pointer list-none dark:text-white">
-                  <span>
-                    {doc.type} {` (${doc.docs.length})`}
-                  </span>
-                </summary>
-              </details>
+              <div className="grid grid-cols-2">
+                <div className="font-medium text-gray-600 text-sm dark:text-white">
+                  {doc.type} {` (${doc?.docs?.length})`}
+                </div>
+                <div>
+                  <a
+                    className="font-xs text-xs text-indigo-600 hover:text-indigo-300 dark:text-white cursor-pointer"
+                    onClick={() => addNewDoc(true, doc.type)}
+                  >
+                    {`Add New ${doc.type}`}
+                  </a>
+                </div>
+              </div>
               <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                 <ul
                   role="list"
                   className="divide-y divide-gray-100 rounded-md border border-gray-200"
                 >
-                  {doc.docs.map((cDoc) => (
+                  {doc?.docs?.map((cDoc) => (
                     <li
                       key={cDoc.file}
                       className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6"
@@ -152,6 +166,7 @@ export default function ComplianceDetails({ facility }) {
                           <span className="w-80 truncate text-sm text-gray-500 dark:text-white">
                             {cDoc.file}
                           </span>
+
                           <span className="w-30  text-sm text-gray-500 dark:text-white">
                             Effective Date:
                           </span>
@@ -198,13 +213,19 @@ export default function ComplianceDetails({ facility }) {
           </div>
           {safeDocs.map((doc) => (
             <div key={doc.type} className="py-5">
-              <details className="group">
-                <summary className="flex justify-between items-center font-medium cursor-pointer list-none dark:text-white">
-                  <span>
-                    {doc.type} {` (${doc.docs.length})`}
-                  </span>
-                </summary>
-              </details>
+              <div className="grid grid-cols-2">
+                <div className="font-medium text-gray-600 text-sm dark:text-white">
+                  {doc.type} {` (${doc?.docs?.length})`}
+                </div>
+                <div>
+                  <a
+                    className="font-xs text-xs text-indigo-600 hover:text-indigo-300 dark:text-white cursor-pointer"
+                    onClick={() => addNewDoc(false, doc.type)}
+                  >
+                    {`Add New ${doc.type}`}
+                  </a>
+                </div>
+              </div>
               <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                 <ul
                   role="list"
@@ -263,6 +284,15 @@ export default function ComplianceDetails({ facility }) {
           ))}
         </div>
       )}
+      <AddEditDoc
+        isOpen={showAddForm}
+        isCompliance={isCompliance}
+        docType={docType}
+        setIsOpen={setShowAddForm}
+        faciltiyId={facility.id}
+        setDoc={isCompliance ? setCompDocs : setSafetyDocs}
+        docs={isCompliance ? compDocs : safetyDocs}
+      />
     </>
   );
 }
