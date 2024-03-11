@@ -7,7 +7,7 @@ const clazz = "SystemDetailsContent";
 const SystemDetailsContent = ({ system }) => {
   console.log(clazz, "The System", system);
   return (
-    <div className="grid grid-cols-2 dark:bg-gray-900 dark:text-white">
+    <div className="grid grid-cols-2 dark:bg-gray-900 dark:text-white ">
       <ImageViewer
         url={pb.files.getUrl(system, system.image[0], {
           thumb: "100x250",
