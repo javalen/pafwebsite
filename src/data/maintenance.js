@@ -99,7 +99,7 @@ const useMaintenance = () => {
   const deleteMaintRecordsForSys = async (id) => {
     console.log(clazz, "Deleting systems for ", id);
     const records = await getMaintRecsForSysId();
-    records.forEach(async (rec) => {
+    records?.forEach(async (rec) => {
       try {
         await pb.collection("maint_record").delete(rec.id);
       } catch (error) {
@@ -137,7 +137,7 @@ const useMaintenance = () => {
 
   const deleteMaintScheduleForSys = async (id) => {
     const records = await getMaintSchedForSys();
-    records.forEach(async (rec) => {
+    records?.forEach(async (rec) => {
       try {
         await pb.collection("maint_sched").delete(rec.id);
       } catch (error) {

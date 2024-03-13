@@ -3,6 +3,7 @@ import usePersonnel from "../../../data/users";
 import { useEffect, useState } from "react";
 import pb from "../../../api/pocketbase";
 import SlideOutUserForm from "./SlideOutUserForm";
+import { AddEditUser } from "../../AddEditUsers/AddEditUser";
 
 const clazz = "UserDetails";
 export default function UserDetails({ facility }) {
@@ -10,6 +11,7 @@ export default function UserDetails({ facility }) {
   const [personnel, setPersonnel] = useState([]);
   const [openUserForm, setOpenUserForm] = useState(false);
   const [dummy, setDummy] = useState();
+  const [mode, setMode] = useState("new");
   const userData = usePersonnel();
 
   const loadUsers = async () => {
@@ -37,7 +39,7 @@ export default function UserDetails({ facility }) {
 
   useEffect(() => {
     loadUsers();
-  }, [facility]);
+  }, [facility, openUserForm]);
   return (
     <div>
       <ul
@@ -111,7 +113,13 @@ export default function UserDetails({ facility }) {
           Add New User
         </button>
       </div>
-      <SlideOutUserForm open={openUserForm} setOpen={setOpenUserForm} />
+      <AddEditUser
+        isOpen={openUserForm}
+        setIsOpen={setOpenUserForm}
+        faciltiyId={facility.id}
+        mode={mode}
+        setReRender={setDummy}
+      />
     </div>
   );
 }

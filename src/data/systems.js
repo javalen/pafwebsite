@@ -33,6 +33,11 @@ const useSystems = () => {
     }
   };
 
+  const addSystem = async (system) => {
+    console.log(clazz, "Reloading Systems");
+    await reloadAllSystems();
+  };
+
   const getFacilitySystems = async (id) => {
     let systems = await getLocalSystems();
     const results = systems.filter((sys) => sys.fac_id === id);
@@ -60,6 +65,26 @@ const useSystems = () => {
     }
   };
 
+  const deleteSystem = async (sys) => {
+    try {
+      // Delete the maint records
+      await maintData.deleteMaintRecordsForSys(sys.id);
+
+      //Delete maint scheds for system
+      await maintData.deleteMaintScheduleForSys(sys.id);
+
+      //Delete any service Records
+      await svcData.deleteServiceForSystem(sys.id);
+
+      //Delete the system
+      await pb.collection("subsys").delete(sys.id);
+    } catch (error) {
+      console.log(clazz, "Error deleting systems for ", sys.id, error);
+    }
+    localStorage.removeItem(SYSTEMS);
+    await reloadAllSystems();
+  };
+
   const reloadData = async () => {
     const systems = await getLocalSystems();
 
@@ -78,6 +103,12 @@ const useSystems = () => {
     await reloadData();
   };
 
-  return { getFacilitySystems, reloadAllSystems, deleteFacilitySystems };
+  return {
+    getFacilitySystems,
+    reloadAllSystems,
+    deleteFacilitySystems,
+    addSystem,
+    deleteSystem,
+  };
 };
 export default useSystems;
