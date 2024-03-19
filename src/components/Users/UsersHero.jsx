@@ -50,6 +50,7 @@ const UsersHero = () => {
   };
 
   const sort = (e) => {
+    console.log(clazz, "sort", e);
     let arr = people;
     let asc = false;
     sortObj = sortObj.map((obj) => {
@@ -169,7 +170,7 @@ const UsersHero = () => {
 
   useEffect(() => {
     load();
-  }, [dummy]);
+  }, []);
 
   return (
     <div className="container w-full mt-20 mb-20">

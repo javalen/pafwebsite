@@ -27,6 +27,10 @@ const App = () => {
 
   const router = createBrowserRouter([
     {
+      path: "/qrcodes",
+      element: <QRCodes />,
+    },
+    {
       path: "/auth",
       element: <LoginPage />,
     },
@@ -54,10 +58,7 @@ const App = () => {
       path: "*",
       element: <LoginPage />,
     },
-    {
-      path: "qr",
-      element: <QRCodes />,
-    },
+
     {
       path: "/",
       element: <Home />,

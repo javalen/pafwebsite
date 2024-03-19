@@ -77,13 +77,31 @@ export default function UserDetails({ facility }) {
                   <a
                     href={`mailto:${person.email}`}
                     target="emailWin"
-                    className=" dark:bg-gray-900 dark:text-white relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
+                    className=" dark:bg-gray-900 dark:text-white relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-2 text-sm font-semibold text-gray-900"
                   >
                     <EnvelopeIcon
                       className="h-5 w-5 text-gray-400 dark:bg-gray-900 dark:text-white"
                       aria-hidden="true"
                     />
                     Email
+                  </a>
+                </div>
+                <div className="-ml-px flex w-0 flex-1">
+                  <a
+                    href={`tel:${person.telephone}`}
+                    target="callWin"
+                    className="dark:bg-gray-900 dark:text-white relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
+                  >
+                    Edit
+                  </a>
+                </div>
+                <div className="-ml-px flex w-0 flex-1">
+                  <a
+                    href={`tel:${person.telephone}`}
+                    target="callWin"
+                    className="dark:bg-gray-900 dark:text-white relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
+                  >
+                    Delete
                   </a>
                 </div>
                 <div className="-ml-px flex w-0 flex-1">

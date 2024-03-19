@@ -45,7 +45,7 @@ const DropdownLinks = [
   {
     id: 2,
     name: "2. Scan for IOS",
-    link: "/qr",
+    link: "/qrcodes",
     target: "",
   },
 ];

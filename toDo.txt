@@ -1,0 +1,27 @@
+Homepage
+- Fix links for mobil app
+- Add styling for Dark mode
+- Add message "Are you sure you want to log out" to the logout button
+- Get rid of the 'View all' button on the product section
+- Add real information to the footer
+
+Users:
+- Fix the sorting, the sorting works if you don't set the dummy state
+- When a users access is blocked show the new user
+- add Pagination
+- When a user is blocked, change the wording on the menu
+- List the user with expandable rows beneath that show the facilities they're associated with
+- Add an edit option to the menu
+- Add a button to add new corporate users (users not associated with a particular property)
+
+Properties:
+- Set a default to the first property
+- Add a search field in the left nav
+- List the indiviadual properties in a div with scroll
+- Fix the dark mode
+- Fix the toggle for hide show
+
+Facility Exceptions
+- List all of the available exceptions
+- Allow user to select which ones to process
+- Write to DB 

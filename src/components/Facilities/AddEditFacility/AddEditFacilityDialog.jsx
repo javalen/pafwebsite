@@ -476,6 +476,7 @@ export function AddEditFacilityDialog({
 
   const handleImageChange = (e) => {
     const files = e.target.files;
+    console.log(clazz, "Files", files);
     setFiles(files);
     const imagesArray = [];
     for (let i = 0; i < files.length; i++) {
@@ -934,7 +935,7 @@ export function AddEditFacilityDialog({
                                   name="file-upload"
                                   multiple
                                   type="file"
-                                  onChange={handleImageChange}
+                                  onChange={(e) => handleImageChange(e)}
                                   className="sr-only"
                                 />
                               </label>

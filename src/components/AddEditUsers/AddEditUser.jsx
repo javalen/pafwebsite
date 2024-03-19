@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import pb from "../../api/pocketbase";
 import usePersonnel from "../../data/users";
 import userImage from "../../assets/user.png";
+import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 
 const clazz = "AddEditUser";
 const tempPassword = "12345";
@@ -69,6 +70,9 @@ export function AddEditUser({
   const [inputs, setInputs] = useState({});
   const [role, setRole] = useState();
   const userData = usePersonnel();
+  const [facImages, setFacImages] = useState([]);
+  const [images, setImages] = useState([userImage]);
+  const [files, setFiles] = useState([]);
 
   const handleSubmit = async (event) => {
     console.log(clazz, "inputs", inputs);
@@ -107,18 +111,17 @@ export function AddEditUser({
     let user = await checkIfUserExist(userInfo.email);
     try {
       if (typeof user === "undefined") {
-        userInfo.password = tempPassword;
-        userInfo.passwordConfirm = tempPassword;
+        const data = new FormData();
+        data.append("email", inputs.email);
+        data.append("name", inputs.name);
+        data.append("phone", inputs.phone);
+        data.append("password", tempPassword);
+        data.append("passwordConfirm", tempPassword);
+        data.append("emailVisibility", true);
+        console.log(clazz, "Files", files);
+        images.forEach((image, index) => data.append("image", files[index]));
 
-        user = await pb.collection("users").create({
-          email: userInfo.email,
-          password: userInfo.password,
-          passwordConfirm: userInfo.password,
-          name: userInfo.name,
-          phone: userInfo.phone,
-          temp_password: userInfo.password,
-          emailVisibility: true,
-        });
+        user = await pb.collection("users").create(data);
       }
 
       const newPersonel = await pb.collection("personel").create({
@@ -152,6 +155,11 @@ export function AddEditUser({
     }
     if (!fields.role.valid) {
       setValidationErr("Problem with Role field");
+      return;
+    }
+
+    if (!hasImages()) {
+      setValidationErr("An image is required");
       return;
     }
 
@@ -251,14 +259,33 @@ export function AddEditUser({
   };
 
   const clear = () => {
-    setImages([]);
+    setImages([userImage]);
 
     setRole("");
     setFacImages([]);
     setInputs({});
   };
 
-  const load = () => {};
+  const load = async () => {
+    await createFile("../../assets/user.png", "iAmAFile.png", "image/png").then(
+      (file) => {
+        //do something with ur file.
+        console.log(clazz, "IMG", file);
+        setFiles([file]);
+      }
+    );
+
+    setImages([userImage]);
+  };
+
+  const createFile = async (path, name, type) => {
+    let response = await fetch(path);
+    let data = await response.blob();
+    let metadata = {
+      type: type,
+    };
+    return new File([data], name, metadata);
+  };
 
   const loadInputs = () => {
     // const sysObj = {
@@ -280,7 +307,7 @@ export function AddEditUser({
       {isOpen ? (
         <>
           <div className="p-5 mt justify-center drop-shadow-2xl items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 outline-none focus:outline-none -mt-40">
-            <div className="relative h-1/2 my-4 mx-auto w-1/3">
+            <div className="relative h-1/2 my-4 mx-auto w-1/4">
               <div className=" border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="bg-slate-100  flex  p-3 border-b border-solid border-blueGray-200 rounded-t ">
@@ -305,6 +332,81 @@ export function AddEditUser({
                   enctype="multipart/form-data"
                   className="p-5"
                 >
+                  <div className="p-2">
+                    <div className="col-span-full">
+                      <label
+                        htmlFor="cover-photo"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Images
+                      </label>
+                      <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-5">
+                        <div className="col-span-full text-center">
+                          <div className="grid grid-cols-5">
+                            {images.map((image, index) => (
+                              <div>
+                                <img
+                                  key={index}
+                                  src={image}
+                                  alt={`Image ${index}`}
+                                  className="h-20 w-20 rounded"
+                                />
+                                <div
+                                  onClick={() => removeImage(index)}
+                                  className="opacity-50 text-center text-black cursor-pointer focus:outline-none"
+                                >
+                                  x
+                                </div>
+                              </div>
+                            ))}
+                            {facImages?.map((image, index) => (
+                              <div>
+                                <img
+                                  key={index}
+                                  src={pb.files.getUrl(
+                                    facility,
+                                    facility.image[index],
+                                    { thumb: "100x250" }
+                                  )}
+                                  alt={`Image ${index}`}
+                                  className="h-20 w-20 rounded"
+                                />
+                                <div
+                                  onClick={() => removeFacImage(index)}
+                                  className="opacity-50 text-center text-black cursor-pointer focus:outline-none"
+                                >
+                                  x
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          {!hasImages() && (
+                            <PhotoIcon
+                              className="mx-auto h-12 w-12 text-gray-300"
+                              aria-hidden="true"
+                            />
+                          )}
+
+                          <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                            <label
+                              htmlFor="file-upload"
+                              className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                            >
+                              <span>Upload Image</span>
+                              <input
+                                id="file-upload"
+                                name="file-upload"
+                                multiple
+                                type="file"
+                                onChange={handleImageChange}
+                                className="sr-only"
+                              />
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div className="sm:col-span-1 p-2">
                     <label
                       htmlFor="name"

@@ -13,12 +13,25 @@ const usePersonnel = () => {
 
   //Returns all of the facilities stored in local storage
   const getLocalUsers = async () => {
+    //return getUsersFromDb();
     let usrs = await JSON.parse(localStorage.getItem(USERS));
 
     if (usrs === null || usrs?.length === 0) {
       const newUsers = await getAllUsersFromDb();
     }
     return JSON.parse(localStorage.getItem(USERS));
+  };
+
+  //Pulls all of the users from the personel table
+  const getUsersFromDb = async () => {
+    try {
+      const records = await pb.collection("personel").getFullList({
+        expand: "user",
+      });
+      return records;
+    } catch (error) {
+      console.log("Error retrieving users", error);
+    }
   };
 
   //Pulls all of the users from the personel table
